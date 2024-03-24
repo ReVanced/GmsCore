@@ -28,6 +28,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.gms.common.BuildConfig;
 import org.microg.gms.utils.ExtendedPackageInfo;
 
 import java.lang.reflect.Method;
@@ -59,7 +60,7 @@ public class PackageUtils {
      */
     @Deprecated
     public static boolean callerHasExtendedAccessPermission(@NonNull Context context) {
-        return context.checkCallingPermission("org.microg.gms.EXTENDED_ACCESS") == PackageManager.PERMISSION_GRANTED;
+        return context.checkCallingPermission(BuildConfig.BASE_PACKAGE_NAME + ".microg.gms.EXTENDED_ACCESS") == PackageManager.PERMISSION_GRANTED;
     }
 
     public static void assertGooglePackagePermission(@NonNull Context context, GooglePackagePermission permission) {

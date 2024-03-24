@@ -21,6 +21,7 @@ import com.google.android.gms.potokens.internal.IPoTokensService
 import com.google.android.gms.potokens.internal.ITokenCallbacks
 import org.microg.gms.BaseService
 import org.microg.gms.common.GmsService
+import org.microg.gms.common.PackageSpoofUtils
 import org.microg.gms.profile.ProfileManager
 
 private val FEATURES = arrayOf(Feature("PO_TOKENS", 1))

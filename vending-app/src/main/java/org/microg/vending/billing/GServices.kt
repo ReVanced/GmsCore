@@ -2,10 +2,11 @@ package org.microg.vending.billing
 
 import android.content.ContentResolver
 import android.net.Uri
+import com.google.android.gms.base.BuildConfig
 
 // TODO: Move
 object GServices {
-    private val CONTENT_URI: Uri = Uri.parse("content://com.google.android.gsf.gservices")
+    private val CONTENT_URI: Uri = Uri.parse("content://${BuildConfig.BASE_PACKAGE_NAME}.android.gsf.gservices")
 
     fun getString(resolver: ContentResolver, key: String, defaultValue: String?): String? {
         var result = defaultValue

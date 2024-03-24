@@ -41,6 +41,10 @@ android {
         minSdkVersion androidMinSdk
         targetSdkVersion androidTargetSdk
         buildConfigField "String", "ICHNAEA_USER_AGENT", "\"microG/${version}\""
+
+        manifestPlaceholders = [
+                basePackageName: "$basePackageName"
+        ]
     }
 
     sourceSets {

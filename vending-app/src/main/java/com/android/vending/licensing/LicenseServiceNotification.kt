@@ -14,12 +14,13 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.PendingIntentCompat
 import com.android.vending.R
+import com.google.android.gms.base.BuildConfig
 import java.util.TreeSet
 
 
 private const val TAG = "FakeLicenseNotification"
-private const val GMS_PACKAGE_NAME = "com.google.android.gms"
-private const val GMS_AUTH_INTENT_ACTION = "com.google.android.gms.auth.login.LOGIN"
+private const val GMS_PACKAGE_NAME = "${BuildConfig.BASE_PACKAGE_NAME}.android.gms"
+private const val GMS_AUTH_INTENT_ACTION = "${BuildConfig.BASE_PACKAGE_NAME}.android.gms.auth.login.LOGIN"
 
 private const val PREFERENCES_KEY_IGNORE_PACKAGES_LIST = "ignorePackages"
 private const val PREFERENCES_FILE_NAME = "licensing"

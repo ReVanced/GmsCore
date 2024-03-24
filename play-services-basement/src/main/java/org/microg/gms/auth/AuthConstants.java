@@ -16,6 +16,8 @@
 
 package org.microg.gms.auth;
 
+import com.google.android.gms.common.BuildConfig;
+
 public class AuthConstants {
     public static final String DEFAULT_ACCOUNT = "<<default account>>";
     public static final String SCOPE_GET_ACCOUNT_ID = "^^_account_id_^^";
@@ -23,12 +25,11 @@ public class AuthConstants {
     public static final String PROVIDER_METHOD_CLEAR_PASSWORD = "clear_password";
     public static final String PROVIDER_EXTRA_CLEAR_PASSWORD = "clear_password";
     public static final String PROVIDER_EXTRA_ACCOUNTS = "accounts";
-    public static final String DEFAULT_ACCOUNT_TYPE = "com.google";
+    public static final String DEFAULT_ACCOUNT_TYPE = BuildConfig.BASE_PACKAGE_NAME;
     public static final String WORK_ACCOUNT_TYPE = "com.google.work";
 
     public static final String KEY_ACCOUNT_SERVICES = "services";
     public static final String KEY_ACCOUNT_CAPABILITIES = "capabilities";
-
     public static final String GOOGLE_USER_ID = "GoogleUserId";
     public static final String GOOGLE_SIGN_IN_STATUS = "googleSignInStatus";
     public static final String GOOGLE_SIGN_IN_ACCOUNT = "googleSignInAccount";
