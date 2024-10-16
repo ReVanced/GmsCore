@@ -82,7 +82,7 @@ class AppCertManager(private val context: Context) {
                 }
                 val token = completeRegisterRequest(context, GcmDatabase(context), RegisterRequest().build(context)
                         .checkin(lastCheckinInfo)
-                        .app("com.google.android.gms", Constants.GMS_PACKAGE_SIGNATURE_SHA1, BuildConfig.VERSION_CODE)
+                        .app("com.google.android.gms", Constants.GOOGLE_SERVICES_PACKAGE_SIGNATURE_SHA1, BuildConfig.VERSION_CODE)
                         .sender(REGISTER_SENDER)
                         .extraParam("subscription", REGISTER_SUBSCRIPTION)
                         .extraParam("X-subscription", REGISTER_SUBSCRIPTION)

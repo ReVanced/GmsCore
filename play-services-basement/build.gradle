@@ -31,6 +31,7 @@ android {
         targetSdkVersion androidTargetSdk
         buildConfigField "int", "VERSION_CODE", "$appVersionCode"
         buildConfigField "String", "BASE_PACKAGE_NAME", "\"$basePackageName\""
+        buildConfigField "String", "PACKAGE_SIGNATURE_SHA1", "\"$packageSignatureSha1\""
         consumerProguardFile 'consumer-rules.pro'
 
         manifestPlaceholders = [

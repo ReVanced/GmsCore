@@ -160,11 +160,11 @@ public class AuthRequest extends HttpFormClient.Request {
     }
 
     public AuthRequest appIsGms() {
-        return app(Constants.GMS_PACKAGE_NAME, Constants.GMS_PACKAGE_SIGNATURE_SHA1);
+        return app(Constants.GOOGLE_SERVICES_PACKAGE_NAME, Constants.GOOGLE_SERVICES_PACKAGE_SIGNATURE_SHA1);
     }
 
     public AuthRequest callerIsGms() {
-        return caller(Constants.GMS_PACKAGE_NAME, Constants.GMS_PACKAGE_SIGNATURE_SHA1);
+        return caller(Constants.GOOGLE_SERVICES_PACKAGE_NAME, Constants.GOOGLE_SERVICES_PACKAGE_SIGNATURE_SHA1);
     }
 
     public AuthRequest callerIsApp() {

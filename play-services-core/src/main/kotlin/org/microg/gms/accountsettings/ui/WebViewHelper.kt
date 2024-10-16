@@ -30,6 +30,7 @@ import org.microg.gms.auth.AuthConstants
 import org.microg.gms.auth.AuthManager
 import org.microg.gms.auth.login.LoginActivity
 import org.microg.gms.common.Constants.GMS_PACKAGE_NAME
+import org.microg.gms.common.Constants.GOOGLE_SERVICES_PACKAGE_NAME
 import org.microg.gms.common.PackageUtils
 import java.net.URLEncoder
 import java.util.Locale
@@ -186,7 +187,7 @@ class WebViewHelper(private val activity: MainActivity, private val webView: Web
     private fun openWebWithAccount(accountName: String, url: String?) {
         try {
             val service = "weblogin:continue=" + URLEncoder.encode(url, "utf-8")
-            val authManager = AuthManager(activity, accountName, GMS_PACKAGE_NAME, service)
+            val authManager = AuthManager(activity, accountName, GOOGLE_SERVICES_PACKAGE_NAME, service)
             val authUrl = authManager.requestAuthWithForegroundResolution(false)?.auth
             if (authUrl?.contains("WILL_NOT_SIGN_IN") == true) {
                 throw RuntimeException("Would not sign in")

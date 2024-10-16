@@ -28,7 +28,7 @@ import org.microg.gms.common.Constants;
 import org.microg.gms.common.PackageUtils;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static org.microg.gms.common.Constants.GMS_PACKAGE_SIGNATURE_SHA1;
+import static org.microg.gms.common.Constants.GOOGLE_SERVICES_PACKAGE_SIGNATURE_SHA1;
 import static org.microg.tools.selfcheck.SelfCheckGroup.Result.Negative;
 import static org.microg.tools.selfcheck.SelfCheckGroup.Result.Positive;
 import static org.microg.tools.selfcheck.SelfCheckGroup.Result.Unknown;
@@ -58,8 +58,8 @@ public class RomSpoofSignatureChecks implements SelfCheckGroup {
         if (knowsPermission) {
             grantsPermission = ContextCompat.checkSelfPermission(context, FAKE_SIGNATURE_PERMISSION) == PERMISSION_GRANTED;
         }
-        boolean spoofsSignature = GMS_PACKAGE_SIGNATURE_SHA1.equals(PackageUtils.firstSignatureDigest(context, Constants.GMS_PACKAGE_NAME, true)) &&
-                GMS_PACKAGE_SIGNATURE_SHA1.equals(PackageUtils.firstSignatureDigest(context, Constants.GMS_PACKAGE_NAME, false));
+        boolean spoofsSignature = GOOGLE_SERVICES_PACKAGE_SIGNATURE_SHA1.equals(PackageUtils.firstSignatureDigest(context, Constants.GMS_PACKAGE_NAME, true)) &&
+                GOOGLE_SERVICES_PACKAGE_SIGNATURE_SHA1.equals(PackageUtils.firstSignatureDigest(context, Constants.GMS_PACKAGE_NAME, false));
         if (knowsPermission && !spoofsSignature && !grantsPermission) {
             collector.addResult(
                     context.getString(R.string.self_check_name_system_spoofs),

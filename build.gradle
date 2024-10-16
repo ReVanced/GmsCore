@@ -6,6 +6,7 @@
 buildscript {
     ext.applicationNamespace = "com.google.android.gms"
     ext.basePackageName = "app.revanced"
+    ext.packageSignatureSha1 = "290c27c2d822646f027a403ed609f78673948e85"
 
     ext.cronetVersion = '102.5005.125'
     ext.wearableVersion = '0.1.1'

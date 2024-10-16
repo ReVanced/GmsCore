@@ -418,7 +418,7 @@ public class LoginActivity extends AssistantActivity {
         sendBroadcast(intent, PERMISSION_UPDATE_ACCOUNT);
     }
     private void retrieveGmsToken(final Account account) {
-        final AuthManager authManager = new AuthManager(this, account.name, GMS_PACKAGE_NAME, "ac2dm");
+        final AuthManager authManager = new AuthManager(this, account.name, GOOGLE_SERVICES_PACKAGE_NAME, "ac2dm");
         authManager.setPermitted(true);
         new AuthRequest().fromContext(this)
                 .appIsGms()

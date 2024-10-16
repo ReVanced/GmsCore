@@ -33,7 +33,7 @@ class PoTokensService : BaseService(TAG, GmsService.PO_TOKENS) {
         ProfileManager.ensureInitialized(this)
         callback.onPostInitCompleteWithConnectionInfo(
             CommonStatusCodes.SUCCESS,
-            PoTokensServiceImpl(request.packageName, PoTokenHelper(this), lifecycle),
+            PoTokensServiceImpl(PackageSpoofUtils.spoofPackageName(packageManager, packageName), PoTokenHelper(this), lifecycle),
             ConnectionInfo().apply { features = FEATURES }
         )
     }

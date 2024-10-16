@@ -41,8 +41,8 @@ public class InstalledPackagesChecks implements SelfCheckGroup {
 
     @Override
     public void doChecks(Context context, ResultCollector collector) {
-        addPackageInstalledAndSignedResult(context, collector, context.getString(R.string.self_check_pkg_gms), Constants.GMS_PACKAGE_NAME, Constants.GMS_PACKAGE_SIGNATURE_SHA1);
-        addPackageInstalledAndSignedResult(context, collector, context.getString(R.string.self_check_pkg_vending), Constants.VENDING_PACKAGE_NAME, Constants.GMS_PACKAGE_SIGNATURE_SHA1);
+        addPackageInstalledAndSignedResult(context, collector, context.getString(R.string.self_check_pkg_gms), Constants.GMS_PACKAGE_NAME, Constants.GOOGLE_SERVICES_PACKAGE_SIGNATURE_SHA1);
+        addPackageInstalledAndSignedResult(context, collector, context.getString(R.string.self_check_pkg_vending), Constants.VENDING_PACKAGE_NAME, Constants.GOOGLE_SERVICES_PACKAGE_SIGNATURE_SHA1);
         addPackageInstalledResult(context, collector, context.getString(R.string.self_check_pkg_gsf), Constants.GSF_PACKAGE_NAME);
     }
 
