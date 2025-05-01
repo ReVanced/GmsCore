@@ -51,6 +51,14 @@ jobs:
           msg: ${{ steps.sign_apk.outputs.signedFiles }}
           separator: ':'
 
+      - name: Attest
+        uses: actions/attest-build-provenance@v2
+        with:
+          # TODO: Get build version and variant
+          # Example: ReVanced GmsCore v1337.593.58392 (Huawei)
+          #  subject-name: 'ReVanced GmsCore '
+          subject-path: play-services-core/build/outputs/apk/releases/*-signed.apk
+
       - name: Release
         uses: ncipollo/release-action@v1
         with:
