@@ -23,14 +23,15 @@ import org.microg.gms.utils.warnOnTransactionIssues
 private const val TAG = "CredentialService"
 
 val FEATURES = arrayOf(
-    Feature("auth_api_credentials_begin_sign_in", 8),
+    Feature("auth_api_credentials_begin_sign_in", 9),
     Feature("auth_api_credentials_sign_out", 2),
     Feature("auth_api_credentials_authorize", 1),
     Feature("auth_api_credentials_revoke_access", 1),
     Feature("auth_api_credentials_save_password", 4),
     Feature("auth_api_credentials_get_sign_in_intent", 6),
     Feature("auth_api_credentials_save_account_linking_token", 3),
-    Feature("auth_api_credentials_get_phone_number_hint_intent", 3)
+    Feature("auth_api_credentials_get_phone_number_hint_intent", 3),
+    Feature("auth_api_credentials_verify_with_google", 1)
 )
 
 class CredentialsService : BaseService(TAG, GmsService.CREDENTIALS) {

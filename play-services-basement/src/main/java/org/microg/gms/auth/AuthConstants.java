@@ -26,6 +26,10 @@ public class AuthConstants {
     public static final String PROVIDER_EXTRA_CLEAR_PASSWORD = "clear_password";
     public static final String PROVIDER_EXTRA_ACCOUNTS = "accounts";
     public static final String DEFAULT_ACCOUNT_TYPE = BuildConfig.BASE_PACKAGE_NAME;
+    public static final String WORK_ACCOUNT_TYPE = "com.google.work";
+
+    public static final String KEY_ACCOUNT_SERVICES = "services";
+    public static final String KEY_ACCOUNT_CAPABILITIES = "capabilities";
     public static final String GOOGLE_USER_ID = "GoogleUserId";
     public static final String GOOGLE_SIGN_IN_STATUS = "googleSignInStatus";
     public static final String GOOGLE_SIGN_IN_ACCOUNT = "googleSignInAccount";
@@ -35,5 +39,6 @@ public class AuthConstants {
     public static final String STATUS = "status";
     public static final String SCOPE_OAUTH2 = "oauth2:";
     public static final String SCOPE_EM_OP_PRO = "oauth2:email openid profile";
+    public static final String GOOGLE_SIGN_IN_AUTHORIZATION_RESULT = "authorization_result";
 
 }

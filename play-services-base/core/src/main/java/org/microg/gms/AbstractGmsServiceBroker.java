@@ -23,10 +23,10 @@ import android.os.Parcel;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.google.android.gms.common.BuildConfig;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.internal.*;
 
+import org.microg.gms.auth.AuthConstants;
 import org.microg.gms.common.GmsService;
 
 import java.util.EnumSet;
@@ -236,7 +236,7 @@ public abstract class AbstractGmsServiceBroker extends IGmsServiceBroker.Stub {
         request.gmsVersion = gmsVersion;
         request.packageName = packageName;
         request.extras = extras;
-        request.account = accountName == null ? null : new Account(accountName, BuildConfig.BASE_PACKAGE_NAME);
+        request.account = accountName == null ? null : new Account(accountName, AuthConstants.DEFAULT_ACCOUNT_TYPE);
         request.scopes = scopes == null ? null : scopesFromStringArray(scopes);
         getService(callback, request);
     }

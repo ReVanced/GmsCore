@@ -23,9 +23,7 @@
     <string name="ask_service_permission_title"><xliff:g example="F-Droid">%1$s</xliff:g> бажав би використовувати:</string>
     <string name="account_manager_title">Google Account Manager</string>
     <string name="sorry">Вибачте…</string>
-    <string name="auth_before_connect">Застосунок на Вашому пристрої намагається увійти до облікового запису Google.
-\n
-\nЯкщо Ви очікували цю дію, натисніть кнопку <b>Увійти</b> для під\'єднання до сторінки авторизації Google, інакше натисніть <b>Скасувати</b>, аби перейти назад до застосунку, що викликав це вікно.</string>
+    <string name="auth_before_connect">Застосунок на вашому пристрої намагається увійти до облікового запису Google.\n\nЯкщо ви очікували на це, натисніть кнопку <b>Увійти</b> для під\'єднання до сторінки авторизації Google, інакше натисніть <b>Скасувати</b>, аби перейти назад до застосунку, що викликав це вікно.</string>
     <string name="auth_sign_in">Увійти</string>
     <string name="auth_connecting">Ваш пристрій встановлює зв\'язок із серверами Google для авторизації.
 \n
@@ -74,9 +72,9 @@
     <string name="self_check_resolution_perm_granted">Ваше програмне забезпечення пристрою підтримує підміну підпису, але потребує додаткової дії для її активації. Будь ласка, перевірте документацію, де вказано як це зробити.</string>
     <string name="self_check_name_system_spoofs">Підміна підпису системою:</string>
     <string name="self_check_resolution_system_spoofs">Будь ласка, перевірте документацію, де вказано як це зробити.</string>
-    <string name="self_check_pkg_gms">Play Services (GmsCore)</string>
-    <string name="self_check_pkg_vending">Play Store (Phonesky)</string>
-    <string name="self_check_pkg_gsf">Services Framework (GSF)</string>
+    <string name="self_check_pkg_gms">Послуги microG</string>
+    <string name="self_check_pkg_vending">microG Companion / Play Маркет</string>
+    <string name="self_check_pkg_gsf">microG Services Framework</string>
     <string name="self_check_name_app_installed"><xliff:g example="F-Droid">%1$s</xliff:g> встановлено: </string>
     <string name="self_check_resolution_app_installed">Встановіть додаток <xliff:g example="F-Droid">%1$s</xliff:g> або сумісний. Будь ласка, перевірте документацію, де вказано сумісні додатки.</string>
     <string name="self_check_name_correct_sig"><xliff:g example="F-Droid">%1$s</xliff:g> має вірний підпис: </string>
@@ -124,7 +122,9 @@
     <string name="gcm_unregister_confirm_message">Деякі додатки автоматично не прив\'язуються або/та не дозволяють зробити це вручну. Такі додатки можуть робити некоректно після відв\'язування.\nПродовжити?</string>
     <string name="gcm_unregister_after_deny_message">Ви заборонили додатку push-повідомлення, який вже був прив\'язаний.\nВи бажаєте відв\'язати його зараз, аби більше не отримувати від нього push-повідомлень?</string>
     <string name="gcm_messages_counter">Повідомлень: <xliff:g example="123">%1$d</xliff:g> (<xliff:g example="12345">%2$d</xliff:g> байт)</string>
-    <string name="safetynet_intro">Google SafetyNet це система сертифікації пристрою, яка гарантує, що пристрій коректно захищено та сумісне із Android CTS. Деякі додатки використовують SafetyNet для безпеки або в якості попередньої системи захисту від злому.\n\nmicroG GmsCore містить вільну реалізацію SafetyNet, але офіційний сервер вимагає, аби запити були підписані за допомогою закритої програмної системи DroidGuard.</string>
+    <string name="safetynet_intro">Google SafetyNet — це система сертифікації пристрою, яка гарантує, що пристрій коректно захищено та сумісне із Android CTS. Деякі застосунки використовують SafetyNet для безпеки або в якості попередньої системи захисту від злому.
+\n
+\nmicroG GmsCore містить вільну реалізацію SafetyNet, але офіційний сервер вимагає, аби запити були підписані за допомогою закритої програмної системи DroidGuard.</string>
     <string name="pref_safetynet_test_title">Протестувати SafetyNet перевірку</string>
     <string name="pref_droidguard_operation_mode">Режим роботи</string>
     <string name="pref_device_registration_import_custom_profile_title">Імпортувати користувацький профіль</string>
@@ -220,8 +220,8 @@
     <string name="perm_car_speed_description">Отримання доступу до швидкості вашої машини</string>
     <string name="perm_car_info_label">Інформація про машину</string>
     <string name="perm_car_info_description">Отримання доступу до інформації про вашу машину</string>
-    <string name="pref_accounts_title">Облікові записи</string>
-    <string name="prefcat_accounts_current_accounts_title">Поточні активні облікові записи</string>
+    <string name="pref_accounts_title">Облікові записи Google</string>
+    <string name="prefcat_accounts_current_accounts_title">Облікові записи</string>
     <string name="pref_vending_licensing_category">Ліцензування Google Play</string>
     <string name="pref_vending_billing_enable_switch">Обробляти платіжні запити</string>
     <string name="perm_car_fuel_label">Рівень палива в машині</string>
@@ -240,4 +240,139 @@
     <string name="backup_disabled">Резервне копіювання наразі неможливе</string>
     <string name="pref_auth_strip_device_name_title">Видалити назву пристрою для автентифікації</string>
     <string name="pref_auth_strip_device_name_summary">Якщо ввімкнено, запити на автентифікацію не міститимуть ім\'я пристрою, що може дозволити несанкціонованим пристроям входити в обліковий запис, але може мати непередбачені наслідки.</string>
+    <string name="credentials_assisted_cancel">Скасувати</string>
+    <string name="credentials_assisted_continue">Продовжити</string>
+    <string name="credentials_assisted_confirmation_header">Зареєструватися</string>
+    <string name="credentials_assisted_continue_as_user_button_label">Продовжити як %1$s</string>
+    <string name="credentials_assisted_signin_consent_header">Увійти як %1$s</string>
+    <string name="credentials_assisted_signin_consent">Якщо ви продовжите, Google передасть ваше ім\'я %1$s, адресу пошти та фото профілю. Ознайомтеся з політикою приватності та умовами використання %1$s.</string>
+    <string name="credentials_assisted_signin_description">Ви можете керувати входом за допомогою Google у своїх облікових записах Google.</string>
+    <string name="credentials_assisted_choose_account_label">Оберіть обліковий запис</string>
+    <string name="credentials_assisted_choose_account_subtitle">щоб продовжити з %1$s</string>
+    <string name="credentials_assisted_sign_back_title">Увійти до %1$s за допомогою Google</string>
+    <string name="credentials_assisted_signin_button_text_long">Увійти за допомогою Google</string>
+    <string name="auth_package_override_request_title">Дозволити <b><xliff:g example="F-Droid">%1$s</xliff:g></b> привілейований доступ до <xliff:g example="account@example.com">%2$s</xliff:g>\?</string>
+    <string name="auth_package_override_request_message"><b><xliff:g example="F-Droid">%1$s</xliff:g></b> хоче отримати доступ до вашого облікового запису під видом <b><xliff:g example="F-Droid">%2$s</xliff:g> by <xliff:g example="F-Droid Inc.">%3$s</xliff:g></b>. Це може надати йому привілейований доступ до вашого облікового запису.</string>
+    <string name="pref_vending_licensing_purchase_free_apps_switch">Автоматично додавати безплатні застосунки до бібліотеки</string>
+    <string name="pref_vending_licensing_purchase_free_apps_summary">Безплатні застосунки можуть перевіряти, чи були вони завантажені з Google Play. Автоматично додавайте безплатні програми до бібліотеки свого облікового запису, щоб завжди проходити перевірку всіх доступних вам безоплатних застосунків.</string>
+    <string name="limited_services_app_name">Обмежені сервіси microG</string>
+    <string name="limited_services_dialog_information_ack">Я розумію</string>
+    <string name="limited_services_dialog_information">Ви користуєтеся «Обмежені сервіси microG». На відміну від звичайних сервісів microG, цей варіант працює лише із застосунками, що використовують бібліотеки microG, а не з тими, що є у Google Play. Це означає, що більшість застосунків ігноруватимуть ці служби.</string>
+    <string name="auth_action_step_enable_checkin">Увімкнути реєстрацію пристрою</string>
+    <string name="auth_action_step_enable_gcm">Увімкнути хмарні повідомлення</string>
+    <string name="auth_action_step_allow_microg_gcm_description">Відповідно до ваших налаштувань, microG потребує вашого дозволу, перш ніж зареєструватися у хмарних повідомленнях.</string>
+    <string name="auth_action_step_perform_content_description">Натисніть, щоби виконати крок</string>
+    <string name="auth_action_step_completed_content_description">Крок виконано</string>
+    <string name="auth_action_activity_finish">Завершити</string>
+    <string name="auth_action_step_enable_lockscreen">Налаштувати надійне блокування екрана</string>
+    <string name="auth_action_step_enable_lockscreen_description">Ваш обліковий запис Google управляється на вашому робочому місці або у навчальному закладі. Ваш адміністратор вирішив, що пристрої потребують надійного блокування екрана, перш ніж отримати доступ до даних облікового запису.\n\nНалаштуйте пароль, PIN-код або графічний ключ для блокування екрана.</string>
+    <string name="auth_action_notification_channel_name">Сповіщення про обліковий запис Google</string>
+    <string name="auth_action_notification_channel_description">Сповіщає, коли один з ваших облікових записів Google потребує додаткового налаштування перед використанням або коли обліковий запис несумісний з microG.</string>
+    <string name="auth_action_notification_title">Потрібні дії з обліковим записом</string>
+    <string name="auth_action_notification_content">Ваш обліковий запис Google потребує додаткового налаштування.</string>
+    <string name="auth_action_activity_explanation">Виконайте наведені нижче дії, щоби мати змогу використовувати свій обліковий запис Google %s на цьому пристрої.</string>
+    <string name="auth_action_activity_header">Завершення налаштування облікового запису Google</string>
+    <string name="auth_action_step_enable_checkin_description">Ваш пристрій повинен зареєструватися в Google принаймні один раз.\n\nВи можете вимкнути реєстрацію пристрою в Google після завершення налаштування облікового запису.</string>
+    <string name="auth_action_step_allow_microg_gcm">Дозволити хмарні повідомлення для microG</string>
+    <string name="auth_action_step_enable_gcm_description">Ви можете вимкнути хмарні повідомлення після завершення налаштування облікового запису.</string>
+    <string name="pref_vending_asset_delivery_summary">Завантажити додаткові ресурси за запитом застосунків, які використовують Play Asset Delivery</string>
+    <string name="pref_vending_asset_delivery_category">Google Play Asset Delivery</string>
+    <string name="pref_vending_asset_delivery_switch">Увімкнути доставку ресурсів на вимогу</string>
+    <string name="pref_vending_asset_device_sync_summary">Застосунки, що використовують Play Asset Delivery, завантажуватимуть додаткові ресурси на основі інформації про пристрій, який наразі використовується.</string>
+    <string name="pref_vending_asset_device_sync_switch">Увімкнути синхронізацію інформації про пристрої</string>
+    <string name="games_achievement_list_title">Досягнення</string>
+    <string name="games_achievements_empty_text">Немає досягнень для цієї гри</string>
+    <string name="games_api_access_denied">Жоден обліковий запис на цьому пристрої не має доступу до ігрових API</string>
+    <string name="games_achievement_locked_content_description">заблоковано</string>
+    <string name="games_achievement_unlocked_content_description">розблоковано</string>
+    <string name="games_achievement_extra_text">%1$s ОД</string>
+    <string name="games_leaderboard_empty_text">Немає таблиці лідерів для цієї гри</string>
+    <string name="games_leaderboard_score_empty_text">Неймовірно! У цій грі немає публічних високих оцінок.</string>
+    <string name="games_leaderboard_list_title">Рейтинги</string>
+    <string name="games_leaderboards_score_label">Рахунок: %1$s</string>
+    <string name="games_snapshot_empty_text">Наразі немає ігрових збережень</string>
+    <string name="games_snapshot_choose_btn_text">вибрати</string>
+    <string name="games_snapshot_delete_btn_text">видалити</string>
+    <string name="games_delete_snapshot_dialog_title">Видалити збережену гру</string>
+    <string name="games_delete_snapshot_dialog_message">Ви впевнені, що хочете видалити цю збережену гру?</string>
+    <string name="games_delete_snapshot_dialog_cancel">Скасувати</string>
+    <string name="games_delete_snapshot_dialog_ok">Гаразд</string>
+    <string name="games_delete_snapshot_error">Не вдалося видалити, повторіть спробу пізніше</string>
+    <string name="service_name_work_profile">Робочий профіль</string>
+    <string name="pref_vending_feature_delivery">Доставка функцій Google Play</string>
+    <string name="pref_vending_split_install_switch">Встановлення компонентів на вимогу</string>
+    <string name="barcode_scanner_brand">Проскановано microG від імені %1$s</string>
+    <string name="camera_permission_dialog_title">Потрібен дозвіл на використання камери</string>
+    <string name="pref_workprofile_disclaimer">Ви несете відповідальність за те, щоби ваше використання microG відповідало корпоративній політиці. microG надається на основі принципу «робимо все можливе і не може гарантувати, що його поведінка буде такою, як очікується».</string>
+    <string name="pref_vending_licensing_split_install_summary">Дозволити застосункам завантажувати та встановлювати додаткові компоненти</string>
+    <string name="pref_workprofile_create_account">Дозволити налаштування робочого облікового запису</string>
+    <string name="pref_workprofile_intro">Під час налаштування робочого профілю для вашого робочого місця або навчального закладу програма може спробувати з\'єднатися з Google, щоб уможливити завантаження застосунків до цього профілю.</string>
+    <string name="camera_permission_dialog_button">Гаразд</string>
+    <string name="camera_permission_dialog_message">Службам microG потрібен доступ до камери вашого пристрою для сканування коду для %1$s.\n\nЩоб увімкнути цю функцію, надайте дозвіл на доступ камери до сервісів microG у налаштуваннях.</string>
+    <string name="credentials_assisted_choose_account_error_tips">Аномалія облікового запису</string>
+    <string name="credentials_assisted_signin_add_account">Додати обліковий запис</string>
+    <string name="auth_action_reauth_notification_title">Необхідні дії щодо облікового запису</string>
+    <string name="pref_game_accounts_title">Ігрові облікові записи Google</string>
+    <string name="pref_auto_create_player">Дозволити реєстрацію облікового запису Play Ігри</string>
+    <string name="pref_auto_create_player_intro">Під час гри вам потрібно використовувати обліковий запис Play Ігри для входу та запису функцій, пов\'язаних з грою, таких як досягнення, таблиці лідерів, архіви тощо. Після вимкнення облікові записи Google, які не прив\'язані до облікового запису Play Ігри, не будуть автоматично реєструватися, і гра не зможе входити та не можна буде грати.</string>
+    <string name="pref_allow_upload_game_played">Дозволити вивантаження пройденої гри</string>
+    <string name="pref_allow_upload_game_played_summary">Якщо ця функція вимкнена, гра не буде повідомляти про ігровий статус після входу в гру, а деякі ігри можуть не дозволити вхід.</string>
+    <string name="pref_change_default_game_player">Змінити обліковий запис для ігор</string>
+    <string name="pref_change_default_game_player_summary">Змінити типовий обліковий запис для ігор та змінити обліковий запис для кожної гри.</string>
+    <string name="pref_delete_game_account_data">Видалити дані Play Ігри</string>
+    <string name="pref_delete_game_account_data_summary">Видалити обліковий запис Play Ігри та всі дані, а також видалити дані окремих ігор.</string>
+    <string name="games_state_description_signed_out">Вийти із системи</string>
+    <string name="games_state_description_delete">Видалити</string>
+    <string name="games_change_button_text">Змінити</string>
+    <string name="games_change_default_account_section_title">Змінити типовий обліковий запис для ігор</string>
+    <string name="games_change_default_account_description">Типовий обліковий запис: %1$s</string>
+    <string name="games_change_default_account_explanation">Цей обліковий запис використовується для автоматичного входу в ігри, збереження прогресу та налаштувань. Зміна типового облікового запису або вихід із системи може призвести до скидання прогресу та налаштувань у іграх, в які ви грали.</string>
+    <string name="games_change_per_game_title">Змінити обліковий запис гри</string>
+    <string name="games_change_per_game_description">Зміна облікового запису для вибраної гри або вихід з нього може призвести до скидання вашого прогресу та налаштувань у грі.</string>
+    <string name="games_change_default_account_for_all_games_dialog_title">Вибрати варіант для нового типового облікового запису</string>
+    <string name="games_change_default_account_for_all_games_dialog_description">Поточний типовий обліковий запис: %1$s</string>
+    <string name="games_change_default_account_for_all_games_dialog_option_only_for_new_games_title">Змінити типовий обліковий запис тільки для нових ігор</string>
+    <string name="games_change_default_account_for_all_games_dialog_option_only_for_new_games_description">Ви не втратите доступ до прогресу та налаштувань ігор, в які ви грали. Але ваш прогрес буде розділений між обліковими записами.</string>
+    <string name="games_change_default_account_for_all_games_dialog_option_for_all_games_title">Змінити типовий обліковий запис для всіх ігор</string>
+    <string name="games_change_default_account_for_all_games_dialog_option_for_all_games_description">Ви можете втратити доступ до прогресу та налаштувань ігор, в які ви грали. Ми перезапустимо гру, щоб застосувати ваші зміни.</string>
+    <string name="games_change_default_account_for_all_games_dialog_option_sign_out_of_all_games_title">Вийти з усіх ігор</string>
+    <string name="games_change_default_account_for_all_games_dialog_option_sign_out_of_all_games_description">Ви можете втратити доступ до прогресу та налаштувань ігор, в які ви грали. Ми перезапустимо гру, щоб застосувати ваші зміни.</string>
+    <string name="games_change_per_game_dialog_title">Вибрати варіант для цієї гри</string>
+    <string name="games_change_per_game_dialog_description">Зміна облікового запису або вихід із системи може призвести до скидання вашого прогресу та налаштувань у грі</string>
+    <string name="games_change_per_game_dialog_option_use_player">Використовується %1$s</string>
+    <string name="games_change_per_game_dialog_option_use_player_snackbar_success_message">Ви будете використовувати %1$s для входу в цю гру</string>
+    <string name="games_change_per_game_dialog_option_sign_out">Вийти із системи</string>
+    <string name="games_change_per_game_dialog_option_sign_out_snackbar_success_message">Ви вийшли з цієї гри</string>
+    <string name="games_change_sign_out_of_all_games_snackbar_success_message">Ви вийшли з усіх ігор</string>
+    <string name="games_change_default_account_for_all_games_snackbar_success_message">Ви будете використовувати %1$s для входу в усі ігри</string>
+    <string name="games_change_default_account_for_new_games_snackbar_success_message">Ви будете використовувати %1$s для входу в нову гру</string>
+    <string name="games_account_display_content">Поточний обліковий запис: %1$s</string>
+    <string name="games_delete_profile_header">Видалити обліковий запис Play Ігри та всі дані</string>
+    <string name="games_delete_profile_explanation">Назавжди видалити свій обліковий запис Google Play Ігри, ОД та всі дані профілю. Ця дія також може призвести до видалення ваших результатів, прогресу (збережених ігор) та налаштувань в іграх, в які ви грали.</string>
+    <string name="games_delete_profile_button">Остаточно видалити</string>
+    <string name="games_delete_game_data_header">Видалити дані конкретної гри</string>
+    <string name="games_delete_game_data_explanation">Ви можете назавжди видалити окремі дані про ігри, в які ви грали за допомогою Google Play Ігри. Ця дія видаляє ваші результати, прогрес (збережені ігри) та налаштування для вибраної гри.</string>
+    <string name="games_delete_profile_dialog_title">Упевнені, що хочете видалити цей обліковий запис?</string>
+    <string name="games_delete_profile_explanation_with_gamer_name">Назавжди видалити свій обліковий запис Google Play Ігри гравця <b>%1$s</b> (<b>%2$s</b>), ОД, та всі дані профілю. Ця дія також може призвести до видалення ваших результатів, прогресу (збережених ігор) та налаштувань в іграх, в які ви грали.</string>
+    <string name="games_delete_profile_dialog_message">Цю дію неможливо скасувати.</string>
+    <string name="games_delete_profile_fail">Не вдалося видалити ваш профіль. Спробуйте пізніше.</string>
+    <string name="games_delete_game_data_confirm_dialog_title">Видалити дані для %1$s</string>
+    <string name="games_delete_game_data_confirm_dialog_message">Остаточне видалення ваших даних для %1$s призведе до видалення ваших результатів, прогресу (збережених ігор) та налаштувань ігор у Google Play Ігри.</string>
+    <string name="games_popup_signin_welcome">Вітаємо, %1$s</string>
+    <string name="pref_auth_two_step_verification_title">Отримувати запити на двоетапну перевірку</string>
+    <string name="pref_auth_two_step_verification_summary">Якщо ця функція ввімкнена, пристрій може отримувати запити на двоетапну перевірку від Google (потрібна служба Cloud Messaging).</string>
+    <string name="service_name_google_location_sharing">Надсилання геоданих Google</string>
+    <string name="location_sharing_description">Керуйте надсиланням геоданих у реальному часі в застосунках і сервісах Google із цього пристрою</string>
+    <string name="location_sharing_learn_more">Дізнатися більше про надсилання геоданих</string>
+    <string name="location_sharing_switch_text">Використовувати надсилання геоданих</string>
+    <string name="location_sharing_turn_off_notify_hint">Якщо ви вимкнете функцію «Надсилання геоданих» для цього пристрою, люди, з якими ви ділитеся даними, не отримають сповіщення.</string>
+    <string name="location_sharing_off_previous_hint">Лише ваше останнє розташування буде доступне, доки ви не ввімкнете його знову.</string>
+    <string name="location_sharing_disabled">Немає активних надсилань геоданих для цього облікового запису</string>
+    <string name="location_sharing_turn_on_hint">Коли ви почнете ділитися геоданими із застосунку чи сервісу Google, керувати функцією «Надсилання геоданих» можна буде тут.\n\nЩоби почати ділитися геоданими, перейдіть у Google Карти або Family Link.</string>
+    <string name="location_sharing_turn_off_title">Вимкнути надсилання геоданих</string>
+    <string name="location_sharing_turn_off_hint">Ви все ще можете ділитися своїм розташуванням з інших пристроїв, на яких виконано вхід в той самий обліковий запис Google, або із застосунків не від Google. Переконайтеся, що ви перевірили налаштування надсилання геоданих скрізь, де це може застосовуватися.\n\nЛюди, з якими ви ділитеся, продовжуватимуть бачити ваше останнє надіслане розташування.</string>
+    <string name="location_sharing_turn_off_cancel">Залишити ввімкненим</string>
+    <string name="location_sharing_turn_off_confirm">Вимкнути</string>
+    <string name="location_sharing_confirm_dialog_title">Увімкнути надсилання геоданих</string>
+    <string name="location_sharing_confirm_dialog_text">Люди, яким ви надаєте доступ до свого розташування, завжди бачитимуть:\n· Ваше ім’я та фото\n· Останнє розташування вашого пристрою, навіть якщо ви не користуєтеся сервісом Google\n· Заряд акумулятора вашого пристрою та чи заряджається він\n· Час вашого прибуття та відправлення, якщо вони додадуть сповіщення про надсилання геоданих</string>
 </resources>

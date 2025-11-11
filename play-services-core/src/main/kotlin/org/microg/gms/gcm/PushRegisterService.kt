@@ -10,6 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.*
 import android.util.Log
+import androidx.core.app.PendingIntentCompat
 import androidx.legacy.content.WakefulBroadcastReceiver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -51,7 +52,7 @@ private suspend fun ensureCheckinIsUpToDate(context: Context) {
     }
 }
 
-private suspend fun ensureAppRegistrationAllowed(context: Context, database: GcmDatabase, packageName: String) {
+suspend fun ensureAppRegistrationAllowed(context: Context, database: GcmDatabase, packageName: String) {
     if (!GcmPrefs.get(context).isEnabled) throw RuntimeException("GCM disabled")
     val app = database.getApp(packageName)
     if (app == null && GcmPrefs.get(context).confirmNewApps) {
@@ -77,7 +78,21 @@ private suspend fun ensureAppRegistrationAllowed(context: Context, database: Gcm
 }
 
 suspend fun completeRegisterRequest(context: Context, database: GcmDatabase, request: RegisterRequest, requestId: String? = null): Bundle = suspendCoroutine { continuation ->
-    PushRegisterManager.completeRegisterRequest(context, database, requestId, request) { continuation.resume(it) }
+    PushRegisterManager.completeRegisterRequest(context, database, requestId, request) {
+        val errorMsg = it.getString(EXTRA_ERROR)
+        Log.w(TAG, "completeRegisterRequest error: $errorMsg")
+        if (errorMsg == PushRegisterManager.attachRequestId(ERROR_INVALID_FID, requestId) && !request.delete) {
+            Log.d(TAG, "completeRegisterRequest register error, You need to call delete first before you can re-register")
+            request.delete = true
+            request.response
+            request.delete = false
+            PushRegisterManager.completeRegisterRequest(context, database, requestId, request) { result ->
+                continuation.resume(result)
+            }
+        } else {
+            continuation.resume(it)
+        }
+    }
 }
 
 private val Intent.requestId: String?
@@ -261,7 +276,7 @@ internal class PushRegisterHandler(private val context: Context, private val dat
         private get() {
             val intent = Intent()
             intent.setPackage("com.google.example.invalidpackage")
-            return PendingIntent.getBroadcast(context, 0, intent, 0)
+            return PendingIntentCompat.getBroadcast(context, 0, intent, 0, false)!!
         }
 
     override fun handleMessage(msg: Message) {

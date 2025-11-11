@@ -23,24 +23,54 @@ import com.huawei.hms.maps.model.Cap as HmsCap
 import com.huawei.hms.maps.model.CustomCap as HmsCustomCap
 import com.huawei.hms.maps.model.RoundCap as HmsRoundCap
 import com.huawei.hms.maps.model.SquareCap as HmsSquareCap
+import com.huawei.hms.maps.model.LatLng as HmsLatLng
 import org.microg.gms.maps.hms.utils.toGms
 import org.microg.gms.maps.hms.utils.toGmsPolylineWidth
 import org.microg.gms.maps.hms.utils.toHms
 import org.microg.gms.maps.hms.utils.toHmsPolylineWidth
 
 class PolylineImpl(private val polyline: Polyline, polylineOptions: PolylineOptions) : IPolylineDelegate.Stub() {
+    private var tag: Any? = null
+    private val linePoints = arrayListOf<LatLng>()
+    private var lastPointsHash: Int = 0
+
+    private val toHmsCache = mutableMapOf<LatLng, HmsLatLng>()
+    private fun List<LatLng>.toHmsList(): List<HmsLatLng> {
+        return this.map { latLng ->
+            toHmsCache.getOrPut(latLng) { latLng.toHms() }
+        }
+    }
 
     override fun remove() {
+        linePoints.clear()
+        toHmsCache.clear()
         polyline.remove()
     }
 
     override fun getId(): String = polyline.id
 
     override fun setPoints(points: List<LatLng>) {
-        polyline.points = points.map { it.toHms() }
+        if (linePoints.size == points.size && linePoints == points) {
+            Log.d(TAG, "setPoints skipped: identical points")
+            return
+        }
+
+        val newHash = points.hashCode()
+        if (newHash == lastPointsHash) {
+            Log.d(TAG, "setPoints skipped: hash unchanged")
+            return
+        }
+        lastPointsHash = newHash
+
+        linePoints.clear()
+        linePoints.addAll(points)
+        polyline.points = linePoints.toHmsList()
+        Log.d(TAG, "setPoints updated, size=${linePoints.size}")
     }
 
-    override fun getPoints(): List<LatLng> = polyline.points.map { it.toGms() }
+    override fun getPoints(): List<LatLng> {
+        return linePoints
+    }
 
     override fun setWidth(width: Float) {
         polyline.width = toHmsPolylineWidth(width)
@@ -121,7 +151,7 @@ class PolylineImpl(private val polyline: Polyline, polylineOptions: PolylineOpti
     }
 
     override fun getTag(): IObjectWrapper {
-        return ObjectWrapper.wrap(polyline.tag)
+        return ObjectWrapper.wrap(this.tag)
     }
 
     override fun setJointType(jointType: Int) {
@@ -138,7 +168,7 @@ class PolylineImpl(private val polyline: Polyline, polylineOptions: PolylineOpti
     }
 
     override fun setTag(tag: IObjectWrapper?) {
-        polyline.tag = tag.unwrap()
+        this.tag = tag.unwrap()
     }
 
     override fun setEndCap(endCap: Cap) {

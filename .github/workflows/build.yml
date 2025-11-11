@@ -9,23 +9,29 @@ jobs:
   build:
     name: "Gradle build"
     runs-on: ubuntu-latest
+    env:
+      GRADLE_MICROG_VERSION_WITHOUT_GIT: 1
 
     steps:
+      - name: "Free disk space"
+        run: |
+          # Deleting unneeded software packages
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /opt/hostedtoolcache/go
+
+          # Log available space
+          df -h
       - name: "Checkout sources"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: "Setup Java"
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: "temurin"
           java-version: "17"
-      - name: "Gradle Wrapper validation"
-        uses: gradle/wrapper-validation-action@v2
       - name: "Setup Gradle"
-        uses: gradle/actions/setup-gradle@v3
-      - name: Cache Gradle
-        uses: burrunan/gradle-cache-action@v1
+        uses: gradle/actions/setup-gradle@v4
       - name: "Setup matchers"
         run: |
           # Setting up matchers...
@@ -44,6 +50,6 @@ jobs:
             fi
           done
       - name: "Execute Gradle assemble"
-        run: "./gradlew --no-daemon assemble"
+        run: "./gradlew assemble"
       - name: "Execute Gradle check"
-        run: "./gradlew --no-daemon check"
+        run: "./gradlew check"

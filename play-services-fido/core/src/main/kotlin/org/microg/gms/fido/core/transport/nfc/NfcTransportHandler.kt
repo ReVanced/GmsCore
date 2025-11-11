@@ -6,12 +6,14 @@
 package org.microg.gms.fido.core.transport.nfc
 
 import android.app.Activity
+import android.app.ActivityOptions
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.IntentFilter
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.IsoDep
+import android.os.Build.VERSION.SDK_INT
 import android.util.Log
 import androidx.core.app.OnNewIntentProvider
 import androidx.core.app.PendingIntentCompat
@@ -22,7 +24,9 @@ import com.google.android.gms.fido.fido2.api.common.AuthenticatorResponse
 import com.google.android.gms.fido.fido2.api.common.RequestOptions
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
+import org.microg.gms.fido.core.MissingPinException
 import org.microg.gms.fido.core.RequestOptionsType
+import org.microg.gms.fido.core.WrongPinException
 import org.microg.gms.fido.core.transport.Transport
 import org.microg.gms.fido.core.transport.TransportHandler
 import org.microg.gms.fido.core.transport.TransportHandlerCallback
@@ -37,7 +41,17 @@ class NfcTransportHandler(private val activity: Activity, callback: TransportHan
 
     private suspend fun waitForNewNfcTag(adapter: NfcAdapter): Tag {
         val intent = Intent(activity, activity.javaClass).apply { addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP) }
-        val pendingIntent: PendingIntent = PendingIntentCompat.getActivity(activity, 0, intent, 0, true)!!
+        val piOptions = if (SDK_INT >= 34) {
+            ActivityOptions.makeBasic().apply {
+                pendingIntentCreatorBackgroundActivityStartMode =
+                    ActivityOptions.MODE_BACKGROUND_ACTIVITY_START_ALLOWED
+            }.toBundle()
+        } else null
+        val pendingIntent: PendingIntent = PendingIntentCompat.getActivity(
+            activity, 0, intent,
+            0,
+            piOptions,
+            true)!!
         adapter.enableForegroundDispatch(
             activity,
             pendingIntent,
@@ -53,20 +67,24 @@ class NfcTransportHandler(private val activity: Activity, callback: TransportHan
     suspend fun register(
         options: RequestOptions,
         callerPackage: String,
-        tag: Tag
+        tag: Tag,
+        pinRequested: Boolean,
+        pin: String?
     ): AuthenticatorAttestationResponse {
         return CtapNfcConnection(activity, tag).open {
-            register(it, activity, options, callerPackage)
+            register(it, activity, options, callerPackage, pinRequested, pin)
         }
     }
 
     suspend fun sign(
         options: RequestOptions,
         callerPackage: String,
-        tag: Tag
+        tag: Tag,
+        pinRequested: Boolean,
+        pin: String?
     ): AuthenticatorAssertionResponse {
         return CtapNfcConnection(activity, tag).open {
-            sign(it, activity, options, callerPackage)
+            sign(it, activity, options, callerPackage, pinRequested, pin)
         }
     }
 
@@ -74,16 +92,18 @@ class NfcTransportHandler(private val activity: Activity, callback: TransportHan
     suspend fun handle(
         options: RequestOptions,
         callerPackage: String,
-        tag: Tag
+        tag: Tag,
+        pinRequested: Boolean,
+        pin: String?
     ): AuthenticatorResponse {
         return when (options.type) {
-            RequestOptionsType.REGISTER -> register(options, callerPackage, tag)
-            RequestOptionsType.SIGN -> sign(options, callerPackage, tag)
+            RequestOptionsType.REGISTER -> register(options, callerPackage, tag, pinRequested, pin)
+            RequestOptionsType.SIGN -> sign(options, callerPackage, tag, pinRequested, pin)
         }
     }
 
 
-    override suspend fun start(options: RequestOptions, callerPackage: String): AuthenticatorResponse {
+    override suspend fun start(options: RequestOptions, callerPackage: String, pinRequested: Boolean, pin: String?, userInfo: String?): AuthenticatorResponse {
         val adapter = NfcAdapter.getDefaultAdapter(activity)
         val newIntentListener = Consumer<Intent> {
             if (it?.action != NfcAdapter.ACTION_TECH_DISCOVERED) return@Consumer
@@ -92,16 +112,23 @@ class NfcTransportHandler(private val activity: Activity, callback: TransportHan
         }
         try {
             (activity as OnNewIntentProvider).addOnNewIntentListener(newIntentListener)
-            while (true) {
+            var ex: Exception? = null
+            for (i in 1..2) {
                 val tag = waitForNewNfcTag(adapter)
                 try {
-                    return handle(options, callerPackage, tag)
+                    return handle(options, callerPackage, tag, pinRequested, pin)
                 } catch (e: CancellationException) {
+                    throw e
+                } catch (e: MissingPinException) {
+                    throw e
+                } catch (e: WrongPinException) {
                     throw e
                 } catch (e: Exception) {
                     Log.w(TAG, e)
+                    ex = e
                 }
             }
+            throw ex ?: Exception("Unknown exception")
         } finally {
             (activity as OnNewIntentProvider).removeOnNewIntentListener(newIntentListener)
         }

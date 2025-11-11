@@ -62,6 +62,12 @@
         android:protectionLevel="dangerous" />
 
     <permission
+        android:name="${basePackageName}.android.gms.permission.ACTIVITY_RECOGNITION"
+        android:label="@string/perm_activity_recognition_label"
+        android:description="@string/perm_activity_recognition_description"
+        android:protectionLevel="normal" />
+
+    <permission
         android:name="${basePackageName}.android.gms.permission.AD_ID"
         android:label="@string/perm_ad_id_label"
         android:description="@string/perm_ad_id_description"
@@ -120,6 +126,15 @@
         android:description="@string/perm_car_vendor_extension_description"
         android:permissionGroup="com.google.android.gms.permission.CAR_INFORMATION"
         android:protectionLevel="dangerous" />
+    <permission
+        android:name="${basePackageName}.android.gms.locationsharingreporter.periodic.STATUS_UPDATE"
+        android:protectionLevel="signature"/>
+    <uses-permission android:name="com.google.android.gms.locationsharingreporter.periodic.STATUS_UPDATE"/>
+
+    <permission
+        android:name="${basePackageName}.android.gms.auth.permission.GOOGLE_ACCOUNT_CHANGE"
+        android:protectionLevel="signature"/>
+    <uses-permission android:name="com.google.android.gms.auth.permission.GOOGLE_ACCOUNT_CHANGE" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -137,6 +152,7 @@
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.READ_SYNC_STATS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -158,13 +174,39 @@
         android:name="android.permission.UPDATE_APP_OPS_STATS"
         tools:ignore="ProtectedPermissions" />
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-sdk
+        tools:overrideLibrary="androidx.compose.ui.tooling,
+        androidx.compose.material3,
+        androidx.activity.compose,
+        androidx.compose.material.icons,
+        androidx.compose.material.ripple,
+        androidx.compose.foundation,
+        androidx.compose.animation,
+        androidx.compose.foundation.layout,
+        androidx.compose.animation.core,
+        androidx.compose.ui.unit,
+        androidx.compose.ui.geometry,
+        androidx.compose.ui.tooling.data,
+        androidx.compose.ui.util,
+        androidx.compose.ui.text,
+        androidx.compose.ui.graphics,
+        androidx.compose.ui.geometry,
+        androidx.compose.ui.tooling.preview,
+        androidx.compose.runtime.saveable,
+        org.opencv"
+        />
     <application
         android:allowBackup="true"
         android:forceQueryable="true"
         android:fullBackupOnly="true"
         android:icon="@mipmap/ic_app"
         android:roundIcon="@mipmap/ic_app"
-        android:label="@string/gms_app_name"
+        android:label="${appLabel}"
         android:multiArch="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/Theme.App">
@@ -192,6 +234,23 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".locationsharingreporter.service.settings.LocationSharingSettingsActivity"
+            android:enabled="true"
+            android:process=":ui"
+            android:excludeFromRecents="true"
+            android:taskAffinity="org.microg.gms.settings"
+            android:exported="false" />
+
+        <activity
+            android:name=".locationsharingreporter.service.settings.LocationShareConfirmActivity"
+            android:enabled="true"
+            android:process=":ui"
+            android:theme="@style/ThemeTranslucentCommon"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
+            android:exported="false" />
 
         <service android:name="org.microg.gms.places.GeoDataService">
             <intent-filter>
@@ -226,6 +285,22 @@
             android:name="org.microg.gms.settings.GoogleSettingsProvider"
             android:authorities="${basePackageName}.settings"
             android:exported="true" />
+        <provider
+            android:name="org.microg.gms.feeds.SubscribedFeedsProvider"
+            android:authorities="subscribedfeeds"
+            android:exported="true"
+            android:multiprocess="false"
+            android:readPermission="android.permission.SUBSCRIBED_FEEDS_READ"
+            android:writePermission="android.permission.SUBSCRIBED_FEEDS_WRITE" />
+        <provider
+            android:authorities="${basePackageName}.android.gms.fileprovider"
+            android:name="org.microg.gms.settings.GmsFileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths"/>
+        </provider>
 
         <!-- Device Checkin -->
 
@@ -282,6 +357,24 @@
         <service
             android:name="org.microg.gms.gcm.McsService"
             android:process=":persistent" />
+
+        <service
+            android:name="org.microg.gms.gcm.GcmInGmsService"
+            android:exported="false"
+            android:process=":persistent"/>
+
+        <receiver
+            android:name="org.microg.gms.gcm.GcmRegistrationReceiver"
+            android:exported="false"
+            android:process=":persistent">
+            <intent-filter>
+                <action android:name="${basePackageName}.gms.gcm.REGISTERED" />
+                <action android:name="${basePackageName}.gms.gcm.REGISTER_ACCOUNT" />
+                <action android:name="${basePackageName}.gms.gcm.NOTIFY_COMPLETE" />
+
+                <action android:name="${basePackageName}.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </receiver>
 
         <receiver
             android:name="org.microg.gms.gcm.SendReceiver"
@@ -369,6 +462,16 @@
             </intent-filter>
         </service>
 
+        <activity
+            android:name="com.google.android.gms.wearable.consent.TermsOfServiceActivity"
+            android:process=":ui"
+            android:configChanges="screenSize|orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.wearable.TOS"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
         <!-- Auth -->
 
         <service android:name="org.microg.gms.auth.loginservice.GoogleLoginService">
@@ -395,6 +498,7 @@
             android:theme="@style/Theme.App.DayNight.Dialog.Alert.NoActionBar">
             <intent-filter>
                 <action android:name="${basePackageName}.android.gms.common.account.CHOOSE_ACCOUNT" />
+                <action android:name="${basePackageName}.android.gms.common.account.CHOOSE_ACCOUNT_USERTILE"/>
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -405,6 +509,7 @@
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:exported="true"
             android:process=":ui"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.LoginBlue">
             <intent-filter>
                 <action android:name="${basePackageName}.android.gms.auth.login.LOGIN" />
@@ -419,6 +524,13 @@
             android:exported="true"
             android:process=":ui"
             android:theme="@style/Theme.AppCompat.DayNight.Dialog" />
+
+        <activity
+            android:name="org.microg.gms.auth.AskPackageOverrideActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:process=":ui"
+            android:theme="@style/Theme.App.Translucent" />
 
         <service
             android:name=".auth.GetToken"
@@ -471,12 +583,20 @@
             android:name="org.microg.gms.auth.signin.AuthSignInActivity"
             android:theme="@style/Theme.App.DayNight.Dialog.Alert.NoActionBar"
             android:process=":ui"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:exported="true">
             <intent-filter>
                 <action android:name="${basePackageName}.android.gms.auth.GOOGLE_SIGN_IN" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <service android:name=".locationsharingreporter.service.LocationSharingReporterApiService">
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.locationsharingreporter.service.START" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
 
         <service android:name="org.microg.gms.signin.SignInService">
             <intent-filter>
@@ -496,25 +616,94 @@
             android:name="org.microg.gms.auth.signin.SignInConfigurationService"
             android:exported="false" />
 
+        <service android:name="org.microg.gms.auth.credentials.identity.AuthorizationService">
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.auth.api.identity.service.authorization.START" />
+            </intent-filter>
+        </service>
+
         <service android:name="org.microg.gms.auth.credentials.identity.IdentitySignInService">
             <intent-filter>
                 <action android:name="${basePackageName}.android.gms.auth.api.identity.service.signin.START" />
             </intent-filter>
         </service>
 
+        <service android:name="org.microg.gms.auth.folsom.KeyRetrievalService">
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.auth.key.retrieval.service.START" />
+            </intent-filter>
+        </service>
+
+        <activity android:name="org.microg.gms.auth.folsom.ui.GenericActivity"
+            android:exported="false"
+            android:process=":ui"/>
+
+        <activity
+            android:name="org.microg.gms.auth.credentials.identity.IdentityFidoProxyActivity"
+            android:exported="false"
+            android:process=":ui"
+            android:theme="@style/Theme.App.Translucent"
+            android:excludeFromRecents="true"/>
+
+        <activity
+            android:theme="@style/Theme.AppCompat.Dialog.Alert"
+            android:name="org.microg.gms.auth.signin.AssistedSignInActivity"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":ui"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize|smallestScreenSize|layoutDirection"
+            android:launchMode="singleTask"
+            android:excludeFromRecents="false">
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.auth.api.credentials.ASSISTED_SIGNIN"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
         <activity
             android:name="org.microg.gms.auth.consent.ConsentSignInActivity"
             android:process=":ui"
             android:exported="false"
+            android:excludeFromRecents="true"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:theme="@style/Theme.AppCompat.DayNight.Dialog"/>
 
+        <activity
+            android:name="org.microg.gms.accountaction.AccountActionActivity"
+            android:exported="true"
+            android:theme="@style/Theme.LoginBlue"/>
+
         <!-- Games -->
+
+        <activity
+            android:name="org.microg.gms.games.ui.GamePlayDataActivity"
+            android:process=":ui"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+        <activity
+            android:name="org.microg.gms.games.ui.InGameUiActivity"
+            android:process=":ui"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize|smallestScreenSize|layoutDirection"
+            android:excludeFromRecents="false"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.AppCompat.Dialog.Alert">
+            <intent-filter>
+                <action android:name="com.google.android.gms.games.SHOW_SELECT_SNAPSHOT"/>
+                <action android:name="com.google.android.gms.games.VIEW_ACHIEVEMENTS" />
+                <action android:name="com.google.android.gms.games.VIEW_LEADERBOARDS" />
+                <action android:name="com.google.android.gms.games.VIEW_LEADERBOARD_SCORES" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name="org.microg.gms.games.GamesSignInActivity"
             android:enabled="true"
             android:exported="false"
             android:process=":ui"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize"
             android:theme="@style/Theme.App.Translucent"/>
 
         <activity
@@ -564,6 +753,7 @@
         <!-- microG Settings activity -->
         <activity
             android:name="org.microg.gms.ui.MainSettingsActivity"
+            android:exported="true"
             android:icon="@mipmap/ic_app_settings"
             android:label="@string/gms_settings_name"
             android:process=":ui"
@@ -571,9 +761,7 @@
             android:taskAffinity="org.microg.gms.settings">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <data
-                    android:host="exposure-notifications-rpis"
-                    android:scheme="x-gms-settings" />
+                <data android:scheme="x-gms-settings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
@@ -584,6 +772,9 @@
             <intent-filter>
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
                 <action android:name="${basePackageName}.android.gms.settings.EXPOSURE_NOTIFICATION_SETTINGS" />
+                <action android:name="${basePackageName}.gms.settings.CHECKIN_SETTINGS" />
+                <action android:name="${basePackageName}.gms.settings.GCM_SETTINGS" />
+                <action android:name="${basePackageName}.gms.settings.MICROG_APP_GCM_SETTINGS" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -649,7 +840,7 @@
             android:name="org.microg.gms.ui.AskPushPermission"
             android:excludeFromRecents="true"
             android:process=":ui"
-            android:theme="@style/Theme.App.DayNight.Dialog.Alert.NoActionBar" />
+            android:theme="@style/Theme.App.Translucent" />
 
         <activity
             android:name="org.microg.gms.ui.GoogleMoreFragment$AsActivity"
@@ -695,6 +886,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.location.settings.LOCATION_SHARING"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
 
         <activity
@@ -702,7 +897,6 @@
             android:process=":ui"
             android:taskAffinity="org.microg.gms.settings">
             <intent-filter>
-                <action android:name="${basePackageName}.android.gms.location.settings.LOCATION_HISTORY" />
                 <action android:name="${basePackageName}.android.location.settings.LOCATION_REPORTING_SETTINGS" />
                 <action android:name="${basePackageName}.android.gms.location.settings.LOCATION_REPORTING_SETTINGS" />
 
@@ -736,8 +930,7 @@
 
         <activity
             android:name="org.microg.gms.googlehelp.ui.GoogleHelpRedirectActivity"
-            android:process=":ui"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:theme="@style/Theme.App.Translucent"
             android:exported="true">
             <intent-filter>
                 <action android:name="${basePackageName}.android.gms.googlehelp.HELP" />
@@ -754,17 +947,6 @@
         <service android:name="org.microg.gms.potokens.PoTokensService">
             <intent-filter>
                 <action android:name="${basePackageName}.android.gms.potokens.service.START" />
-            </intent-filter>
-        </service>
-
-        <!-- fitness -->
-
-        <service
-            android:name="com.google.android.gms.fitness.service.history.FitHistoryBroker"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="${basePackageName}.android.gms.fitness.HistoryApi" />
             </intent-filter>
         </service>
 
@@ -839,6 +1021,30 @@
             </intent-filter>
         </service>
 
+        <!-- family -->
+
+        <activity
+            android:name="com.google.android.gms.family.v2.manage.FamilyManagementActivity"
+            android:exported="true"
+            android:configChanges="screenSize|screenLayout|orientation"
+            android:process=":ui">
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.family.v2.MANAGE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.google.android.gms.family.v2.manage.DeleteMemberActivity"
+            android:exported="true"
+            android:configChanges="screenSize|screenLayout|orientation"
+            android:process=":ui">
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.family.v2.DELETE_MEMBER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
         <!-- feedback -->
 
         <service android:name="org.microg.gms.feedback.FeedbackService">
@@ -852,6 +1058,13 @@
             android:exported="true"
             android:excludeFromRecents="true"
             android:theme="@style/Theme.App.Translucent"/>
+
+        <activity
+            android:name="com.google.android.gms.credential.manager.PasswordManagerActivity"
+            android:exported="true"
+            android:process=":ui"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.Translucent"/>
 
         <service android:name="org.microg.gms.clearcut.ClearcutLoggerService">
             <intent-filter>
@@ -923,11 +1136,50 @@
             </intent-filter>
         </service>
 
+        <service android:name=".semanticlocationhistory.SemanticLocationHistoryService" android:exported="true">
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.semanticlocationhistory.service.START" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name="com.google.android.location.settings.LocationHistorySettingsActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.location.settings.LOCATION_HISTORY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
         <service android:name="org.microg.gms.audit.AuditService">
             <intent-filter>
                 <action android:name="${basePackageName}.android.gms.audit.service.START" />
             </intent-filter>
         </service>
+
+        <service android:name="org.microg.gms.common.ClientTelemetryService">
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.common.telemetry.service.START" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name="org.microg.gms.mlkit.BarcodeScanningActivity"
+            android:exported="true"
+            android:process=":ui"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.mlkit.ACTION_SCAN_BARCODE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name="com.google.android.gms.maps.auth.ApiTokenService"
+            android:exported="true"/>
 
         <service android:name="org.microg.gms.DummyService">
             <intent-filter>
@@ -945,11 +1197,9 @@
                 <action android:name="${basePackageName}.android.gms.auth.account.authenticator.auto.service.START" />
                 <action android:name="${basePackageName}.android.gms.auth.account.authenticator.chromeos.START" />
                 <action android:name="${basePackageName}.android.gms.auth.account.authenticator.tv.service.START" />
-                <action android:name="${basePackageName}.android.gms.auth.api.identity.service.authorization.START" />
                 <action android:name="${basePackageName}.android.gms.auth.api.identity.service.credentialsaving.START" />
                 <action android:name="${basePackageName}.android.gms.auth.api.phone.service.InternalService.START" />
                 <action android:name="${basePackageName}.android.gms.auth.api.signin.service.START" />
-                <action android:name="${basePackageName}.android.gms.auth.blockstore.service.START"/>
                 <action android:name="${basePackageName}.android.gms.auth.config.service.START" />
                 <action android:name="${basePackageName}.android.gms.auth.cryptauth.cryptauthservice.START" />
                 <action android:name="${basePackageName}.android.gms.auth.proximity.devicesyncservice.START" />
@@ -967,7 +1217,6 @@
                 <action android:name="${basePackageName}.android.gms.chromesync.service.START" />
                 <action android:name="${basePackageName}.android.gms.common.download.START" />
                 <action android:name="${basePackageName}.android.gms.common.service.START" />
-                <action android:name="${basePackageName}.android.gms.common.telemetry.service.START" />
                 <action android:name="${basePackageName}.android.gms.config.START" />
                 <action android:name="${basePackageName}.android.gms.constellation.service.START" />
                 <action android:name="${basePackageName}.android.gms.deviceconnection.service.START" />
@@ -982,13 +1231,10 @@
                 <action android:name="${basePackageName}.android.gms.fido.u2f.thirdparty.START" />
                 <action android:name="${basePackageName}.android.gms.fido.u2f.zeroparty.START" />
                 <action android:name="${basePackageName}.android.gms.fitness.BleApi" />
-                <action android:name="${basePackageName}.android.gms.fitness.ConfigApi" />
                 <action android:name="${basePackageName}.android.gms.fitness.GoalsApi" />
                 <action android:name="${basePackageName}.android.gms.fitness.GoogleFitnessService.START" />
                 <action android:name="${basePackageName}.android.gms.fitness.InternalApi" />
-                <action android:name="${basePackageName}.android.gms.fitness.RecordingApi" />
                 <action android:name="${basePackageName}.android.gms.fitness.SensorsApi" />
-                <action android:name="${basePackageName}.android.gms.fitness.SessionsApi" />
                 <action android:name="${basePackageName}.android.gms.fonts.service.START" />
                 <action android:name="${basePackageName}.android.gms.freighter.service.START" />
                 <action android:name="${basePackageName}.android.gms.growth.service.START" />

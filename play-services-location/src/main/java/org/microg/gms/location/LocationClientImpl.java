@@ -24,6 +24,7 @@ import android.os.Looper;
 import android.os.RemoteException;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.ILocationListener;
@@ -36,9 +37,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.internal.IGeofencerCallbacks;
 import com.google.android.gms.location.internal.ParcelableGeofence;
 
-import org.microg.gms.common.api.ConnectionCallbacks;
+import com.google.android.gms.common.api.internal.ConnectionCallbacks;
 import org.microg.gms.common.api.GoogleApiClientImpl;
-import org.microg.gms.common.api.OnConnectionFailedListener;
+import com.google.android.gms.common.api.internal.OnConnectionFailedListener;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -113,7 +114,7 @@ public class LocationClientImpl extends GoogleLocationManagerClient {
         getServiceInterface().requestLocationUpdatesWithIntent(request, pendingIntent);
     }
 
-    public void requestLocationUpdates(LocationRequest request, LocationListener listener, Looper looper) throws RemoteException {
+    public void requestLocationUpdates(LocationRequest request, LocationListener listener, @NonNull Looper looper) throws RemoteException {
         final Handler handler = new Handler(looper);
         requestLocationUpdates(request, handler::post, listener);
     }
@@ -135,7 +136,7 @@ public class LocationClientImpl extends GoogleLocationManagerClient {
         getServiceInterface().requestLocationUpdatesWithPackage(request, listenerMap.get(listener), getContext().getPackageName());
     }
 
-    public void requestLocationUpdates(LocationRequest request, LocationCallback callback, Looper looper) throws RemoteException {
+    public void requestLocationUpdates(LocationRequest request, LocationCallback callback, @NonNull Looper looper) throws RemoteException {
         final Handler handler = new Handler(looper);
         requestLocationUpdates(request, handler::post, callback);
     }
