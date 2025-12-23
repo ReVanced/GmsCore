@@ -61,6 +61,26 @@ public class GcmDatabase extends SQLiteOpenHelper {
         }
     }
 
+    public static class AppColumnIndices {
+        public final int packageNameIndex;
+        public final int lastErrorIndex;
+        public final int lastMessageTimestampIndex;
+        public final int totalMessageCountIndex;
+        public final int totalMessageBytesIndex;
+        public final int allowRegisterIndex;
+        public final int wakeForDeliveryIndex;
+
+        public AppColumnIndices(Cursor cursor) {
+            packageNameIndex = cursor.getColumnIndexOrThrow(FIELD_PACKAGE_NAME);
+            lastErrorIndex = cursor.getColumnIndexOrThrow(FIELD_LAST_ERROR);
+            lastMessageTimestampIndex = cursor.getColumnIndexOrThrow(FIELD_LAST_MESSAGE_TIMESTAMP);
+            totalMessageCountIndex = cursor.getColumnIndexOrThrow(FIELD_TOTAL_MESSAGE_COUNT);
+            totalMessageBytesIndex = cursor.getColumnIndexOrThrow(FIELD_TOTAL_MESSAGE_BYTES);
+            allowRegisterIndex = cursor.getColumnIndexOrThrow(FIELD_ALLOW_REGISTER);
+            wakeForDeliveryIndex = cursor.getColumnIndexOrThrow(FIELD_WAKE_FOR_DELIVERY);
+        }
+    }
+
     public static class App {
         public final String packageName;
         public final String lastError;
@@ -70,18 +90,36 @@ public class GcmDatabase extends SQLiteOpenHelper {
         public final boolean allowRegister;
         public final boolean wakeForDelivery;
 
+        public App(Cursor cursor, AppColumnIndices indices) {
+            packageName = cursor.getString(indices.packageNameIndex);
+            lastError = cursor.getString(indices.lastErrorIndex);
+            lastMessageTimestamp = cursor.getLong(indices.lastMessageTimestampIndex);
+            totalMessageCount = cursor.getLong(indices.totalMessageCountIndex);
+            totalMessageBytes = cursor.getLong(indices.totalMessageBytesIndex);
+            allowRegister = cursor.getLong(indices.allowRegisterIndex) == 1;
+            wakeForDelivery = cursor.getLong(indices.wakeForDeliveryIndex) == 1;
+        }
+
         private App(Cursor cursor) {
-            packageName = cursor.getString(cursor.getColumnIndexOrThrow(FIELD_PACKAGE_NAME));
-            lastError = cursor.getString(cursor.getColumnIndexOrThrow(FIELD_LAST_ERROR));
-            lastMessageTimestamp = cursor.getLong(cursor.getColumnIndexOrThrow(FIELD_LAST_MESSAGE_TIMESTAMP));
-            totalMessageCount = cursor.getLong(cursor.getColumnIndexOrThrow(FIELD_TOTAL_MESSAGE_COUNT));
-            totalMessageBytes = cursor.getLong(cursor.getColumnIndexOrThrow(FIELD_TOTAL_MESSAGE_BYTES));
-            allowRegister = cursor.getLong(cursor.getColumnIndexOrThrow(FIELD_ALLOW_REGISTER)) == 1;
-            wakeForDelivery = cursor.getLong(cursor.getColumnIndexOrThrow(FIELD_WAKE_FOR_DELIVERY)) == 1;
+            this(cursor, new AppColumnIndices(cursor));
         }
 
         public boolean hasError() {
             return !TextUtils.isEmpty(lastError);
+        }
+    }
+
+    public static class RegistrationColumnIndices {
+        public final int packageNameIndex;
+        public final int signatureIndex;
+        public final int timestampIndex;
+        public final int registerIdIndex;
+
+        public RegistrationColumnIndices(Cursor cursor) {
+            packageNameIndex = cursor.getColumnIndexOrThrow(FIELD_PACKAGE_NAME);
+            signatureIndex = cursor.getColumnIndexOrThrow(FIELD_SIGNATURE);
+            timestampIndex = cursor.getColumnIndexOrThrow(FIELD_TIMESTAMP);
+            registerIdIndex = cursor.getColumnIndexOrThrow(FIELD_REGISTER_ID);
         }
     }
 
@@ -91,11 +129,15 @@ public class GcmDatabase extends SQLiteOpenHelper {
         public final long timestamp;
         public final String registerId;
 
+        public Registration(Cursor cursor, RegistrationColumnIndices indices) {
+            packageName = cursor.getString(indices.packageNameIndex);
+            signature = cursor.getString(indices.signatureIndex);
+            timestamp = cursor.getLong(indices.timestampIndex);
+            registerId = cursor.getString(indices.registerIdIndex);
+        }
+
         public Registration(Cursor cursor) {
-            packageName = cursor.getString(cursor.getColumnIndexOrThrow(FIELD_PACKAGE_NAME));
-            signature = cursor.getString(cursor.getColumnIndexOrThrow(FIELD_SIGNATURE));
-            timestamp = cursor.getLong(cursor.getColumnIndexOrThrow(FIELD_TIMESTAMP));
-            registerId = cursor.getString(cursor.getColumnIndexOrThrow(FIELD_REGISTER_ID));
+            this(cursor, new RegistrationColumnIndices(cursor));
         }
     }
 
@@ -110,9 +152,10 @@ public class GcmDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_APPS, null, null, null, null, null, null);
         if (cursor != null) {
+            AppColumnIndices indices = new AppColumnIndices(cursor);
             List<App> result = new ArrayList<>();
             while (cursor.moveToNext()) {
-                result.add(new App(cursor));
+                result.add(new App(cursor, indices));
             }
             cursor.close();
             return result;
@@ -124,9 +167,10 @@ public class GcmDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_REGISTRATIONS, null, null, null, null, null, null);
         if (cursor != null) {
+            RegistrationColumnIndices indices = new RegistrationColumnIndices(cursor);
             List<Registration> result = new ArrayList<>();
             while (cursor.moveToNext()) {
-                result.add(new Registration(cursor));
+                result.add(new Registration(cursor, indices));
             }
             cursor.close();
             return result;
@@ -139,9 +183,10 @@ public class GcmDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_REGISTRATIONS, null, FIELD_PACKAGE_NAME + " LIKE ?", new String[]{packageName}, null, null, null);
         if (cursor != null) {
+            RegistrationColumnIndices indices = new RegistrationColumnIndices(cursor);
             List<Registration> result = new ArrayList<>();
             while (cursor.moveToNext()) {
-                result.add(new Registration(cursor));
+                result.add(new Registration(cursor, indices));
             }
             cursor.close();
             return result;
