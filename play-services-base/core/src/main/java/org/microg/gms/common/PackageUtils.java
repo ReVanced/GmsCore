@@ -59,7 +59,7 @@ public class PackageUtils {
      */
     @Deprecated
     public static boolean callerHasExtendedAccessPermission(@NonNull Context context) {
-        return context.checkCallingPermission("org.microg.gms.EXTENDED_ACCESS") == PackageManager.PERMISSION_GRANTED;
+        return context.checkCallingPermission("app.revanced.org.microg.gms.EXTENDED_ACCESS") == PackageManager.PERMISSION_GRANTED;
     }
 
     public static void assertGooglePackagePermission(@NonNull Context context, GooglePackagePermission permission) {
