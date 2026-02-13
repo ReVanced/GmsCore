@@ -55,6 +55,7 @@ import org.microg.gms.auth.AuthConstants;
 import org.microg.gms.auth.AuthManager;
 import org.microg.gms.auth.AuthRequest;
 import org.microg.gms.auth.AuthResponse;
+import org.microg.gms.base.core.BuildConfig;
 import org.microg.gms.checkin.CheckinManager;
 import org.microg.gms.checkin.LastCheckinInfo;
 import org.microg.gms.common.Constants;
@@ -100,8 +101,8 @@ public class LoginActivity extends AssistantActivity {
     private static final String GOOGLE_SIGNUP_URL = "https://accounts.google.com/signup";
     private static final String MAGIC_USER_AGENT = " MinuteMaid";
     private static final String COOKIE_OAUTH_TOKEN = "oauth_token";
-    private static final String ACTION_UPDATE_ACCOUNT = "com.google.android.gms.auth.GOOGLE_ACCOUNT_CHANGE";
-    private static final String PERMISSION_UPDATE_ACCOUNT = "com.google.android.gms.auth.permission.GOOGLE_ACCOUNT_CHANGE";
+    private static final String ACTION_UPDATE_ACCOUNT = "app.revanced.android.gms.auth.GOOGLE_ACCOUNT_CHANGE";
+    private static final String PERMISSION_UPDATE_ACCOUNT = "app.revanced.android.gms.auth.permission.GOOGLE_ACCOUNT_CHANGE";
     private static final int REQUEST_CODE_SIGNUP = 1001;
 
     private final FidoHandler fidoHandler = new FidoHandler(this);

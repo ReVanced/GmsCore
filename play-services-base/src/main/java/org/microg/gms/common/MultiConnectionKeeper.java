@@ -112,18 +112,13 @@ public class MultiConnectionKeeper {
     }
 
     private String getTargetPackageWithoutPref() {
+        // Must be self, as we want to bind to our own services, and not to GMS or microG ones,
+        // in case system GMS is installed alongside.
+        if (true) return context.getPackageName();
+
         // Pref: gms > microG > self
         PackageManager pm = context.getPackageManager();
-        try {
-            if (isSystemGoogleOrMicrogSig(pm, GMS_PACKAGE_NAME)) {
-                Log.d(TAG, GMS_PACKAGE_NAME + " found !");
-                return GMS_PACKAGE_NAME;
-            } else {
-                Log.w(TAG, GMS_PACKAGE_NAME + " found with another signature");
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.d(TAG, GMS_PACKAGE_NAME + " not found");
-        }
+
         try {
             if (isMicrogSig(pm, USER_MICROG_PACKAGE_NAME)) {
                 Log.d(TAG, USER_MICROG_PACKAGE_NAME + " found !");
@@ -133,6 +128,16 @@ public class MultiConnectionKeeper {
             }
         } catch (PackageManager.NameNotFoundException e) {
             Log.d(TAG, USER_MICROG_PACKAGE_NAME + " not found");
+        }
+        try {
+            if (isSystemGoogleOrMicrogSig(pm, GMS_PACKAGE_NAME)) {
+                Log.d(TAG, GMS_PACKAGE_NAME + " found !");
+                return GMS_PACKAGE_NAME;
+            } else {
+                Log.w(TAG, GMS_PACKAGE_NAME + " found with another signature");
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.d(TAG, GMS_PACKAGE_NAME + " not found");
         }
         return context.getPackageName();
     }
@@ -253,7 +258,7 @@ public class MultiConnectionKeeper {
                         if (requireMicrog && !isMicrog(resolveInfo)) {
                             Log.w(TAG, "GMS service found for " + actionString + " but looks not like microG");
                         } else {
-                            if (isSystemGoogleOrMicrogSig(pm, targetPackage)){
+                            if (isSystemGoogleOrMicrogSig(pm, targetPackage)) {
                                 Log.d(TAG, "GMS service found for " + actionString);
                                 return intent;
                             } else {
