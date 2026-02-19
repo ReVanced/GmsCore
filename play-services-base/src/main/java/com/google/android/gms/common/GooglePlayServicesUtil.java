@@ -39,6 +39,7 @@ import org.microg.gms.common.PublicApi;
 @PublicApi
 public class GooglePlayServicesUtil {
     private static final String TAG = "GooglePlayServicesUtil";
+    private static final int PACKAGE_CONTEXT_FLAGS = Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY;
 
     public static final String GMS_ERROR_DIALOG = "GooglePlayServicesErrorDialog";
 
@@ -58,6 +59,13 @@ public class GooglePlayServicesUtil {
      * Package name for Google Play Store.
      */
     public static final String GOOGLE_PLAY_STORE_PACKAGE = "com.android.vending";
+
+    private static String[] getGmsPackageCandidates() {
+        return new String[] {
+                Constants.USER_MICROG_PACKAGE_NAME,
+                Constants.GMS_PACKAGE_NAME
+        };
+    }
 
     /**
      * Returns a dialog to address the provided errorCode. The returned dialog displays a localized
@@ -136,11 +144,13 @@ public class GooglePlayServicesUtil {
      * @return The Context object of the Buddy APK or null if the Buddy APK is not installed on the device.
      */
     public static Context getRemoteContext(Context context) {
-        try {
-            return context.createPackageContext(Constants.GMS_PACKAGE_NAME, Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);
-        } catch (PackageManager.NameNotFoundException unused) {
-            return null;
+        for (String packageName : getGmsPackageCandidates()) {
+            try {
+                return context.createPackageContext(packageName, PACKAGE_CONTEXT_FLAGS);
+            } catch (PackageManager.NameNotFoundException ignored) {
+            }
         }
+        return null;
     }
 
     /**
@@ -149,11 +159,13 @@ public class GooglePlayServicesUtil {
      * @return The Resources object of the Buddy APK or null if the Buddy APK is not installed on the device.
      */
     public static Resources getRemoteResources(Context context) {
-        try {
-            return context.getPackageManager().getResourcesForApplication(Constants.GMS_PACKAGE_NAME);
-        } catch (PackageManager.NameNotFoundException unused) {
-            return null;
+        for (String packageName : getGmsPackageCandidates()) {
+            try {
+                return context.getPackageManager().getResourcesForApplication(packageName);
+            } catch (PackageManager.NameNotFoundException ignored) {
+            }
         }
+        return null;
     }
 
     /**

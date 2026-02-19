@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.os.Process;
 import android.util.Log;
 
+import com.google.android.gms.BuildConfig;
 import com.google.android.gms.chimera.container.DynamiteContext;
 import com.google.android.gms.chimera.container.DynamiteModuleInfo;
 import com.google.android.gms.chimera.container.FilteredClassLoader;
@@ -34,6 +35,24 @@ public class DynamiteContextFactory {
     // WeakHashMap cannot be used, and there is a high probability that it will be recycled, causing ClassLoader to be rebuilt
     private static final Map<String, ClassLoader> sClassLoaderCache = new HashMap<>();
 
+    private static Context createGmsPackageContext(Context context) throws PackageManager.NameNotFoundException {
+        String[] candidates = new String[] {
+                BuildConfig.APPLICATION_ID,
+                Constants.USER_MICROG_PACKAGE_NAME,
+                Constants.GMS_PACKAGE_NAME
+        };
+
+        for (String packageName : candidates) {
+            try {
+                return context.createPackageContext(packageName, 0);
+            } catch (PackageManager.NameNotFoundException e) {
+                Log.d(TAG, "Unable to create package context for " + packageName);
+            }
+        }
+
+        throw new PackageManager.NameNotFoundException("No supported GMS package context found");
+    }
+
     public static DynamiteContext createDynamiteContext(String moduleId, Context originalContext) {
         if (originalContext == null) {
             Log.w(TAG, "create <DynamiteContext> Original context is null");
@@ -49,7 +68,7 @@ public class DynamiteContextFactory {
         }
         try {
             DynamiteModuleInfo moduleInfo = new DynamiteModuleInfo(moduleId);
-            Context gmsContext = originalContext.createPackageContext(Constants.GMS_PACKAGE_NAME, 0);
+            Context gmsContext = createGmsPackageContext(originalContext);
             Context originalAppContext = originalContext.getApplicationContext();
 
             DynamiteContext dynamiteContext;
