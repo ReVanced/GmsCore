@@ -342,6 +342,12 @@ public class PackageUtils {
         return processName.equals(context.getPackageName());
     }
 
+    @NonNull
+    public static String getSelfPackageName(@NonNull Context context) {
+        Context appContext = context.getApplicationContext();
+        return appContext != null ? appContext.getPackageName() : context.getPackageName();
+    }
+
     public static void warnIfNotPersistentProcess(Class<?> clazz) {
         if (!isPersistentProcess()) {
             Log.w("GmsPackageUtils", clazz.getSimpleName() + " initialized outside persistent process", new RuntimeException());

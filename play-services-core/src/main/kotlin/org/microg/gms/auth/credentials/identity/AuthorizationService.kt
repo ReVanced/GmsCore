@@ -45,7 +45,6 @@ import org.microg.gms.auth.signin.getServerAuthTokenManager
 import org.microg.gms.auth.signin.performSignIn
 import org.microg.gms.auth.signin.scopeUris
 import org.microg.gms.common.AccountUtils
-import org.microg.gms.common.Constants
 import org.microg.gms.common.GmsService
 import org.microg.gms.common.PackageUtils
 import java.util.concurrent.atomic.AtomicInteger
@@ -107,7 +106,7 @@ class AuthorizationServiceImpl(val context: Context, val packageName: String, ov
                     defaultAccount?.name?.let { setAccountName(it) }
                 }.build()
                 val intent = Intent(context, AuthSignInActivity::class.java).apply {
-                    `package` = Constants.GMS_PACKAGE_NAME
+                    `package` = PackageUtils.getSelfPackageName(context)
                     putExtra("config", SignInConfiguration(packageName, options))
                 }
                 AuthorizationResult(

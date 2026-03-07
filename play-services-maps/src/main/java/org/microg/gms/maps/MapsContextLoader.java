@@ -58,15 +58,19 @@ public class MapsContextLoader {
             }
             MapsContextLoader.mapsContext = mapsContext;
         }
+        MapsRemoteContextHolder.set(MapsContextLoader.mapsContext);
         return mapsContext;
     }
 
     public static ICreator getCreator(Context context, @Nullable MapsInitializer.Renderer preferredRenderer) {
         Log.d(TAG, "preferredRenderer: " + preferredRenderer);
+        Context mapsContext = getMapsContext(context, preferredRenderer);
         if (creator == null) {
             Log.d(TAG, "Making Creator dynamically");
             try {
-                Context mapsContext = getMapsContext(context, preferredRenderer);
+                if (mapsContext == null) {
+                    throw new IllegalStateException("Unable to obtain remote maps context");
+                }
                 Class<?> clazz = mapsContext.getClassLoader().loadClass("com.google.android.gms.maps.internal.CreatorImpl");
                 creator = ICreator.Stub.asInterface((IBinder) clazz.newInstance());
                 creator.initV2(ObjectWrapper.wrap(mapsContext.getResources()), Constants.GMS_VERSION_CODE);

@@ -18,9 +18,8 @@ package org.microg.gms.maps.vtm;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.pm.PackageManager;
 
-import org.microg.gms.common.Constants;
+import org.microg.gms.maps.MapsRemoteContextHolder;
 
 public class ApplicationContextWrapper extends ContextWrapper {
     private Context applicationContext;
@@ -31,12 +30,7 @@ public class ApplicationContextWrapper extends ContextWrapper {
     }
 
     public static ApplicationContextWrapper gmsContextWithAttachedApplicationContext(Context applicationContext) {
-        try {
-            Context context = applicationContext.createPackageContext(Constants.GMS_PACKAGE_NAME, CONTEXT_INCLUDE_CODE & CONTEXT_IGNORE_SECURITY);
-            return new ApplicationContextWrapper(context, applicationContext);
-        } catch (PackageManager.NameNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        return new ApplicationContextWrapper(MapsRemoteContextHolder.require(), applicationContext);
     }
 
     public static ApplicationContextWrapper matchingApplicationContext(Context context) {
