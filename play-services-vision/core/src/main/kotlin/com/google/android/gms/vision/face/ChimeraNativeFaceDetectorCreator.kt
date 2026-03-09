@@ -9,7 +9,6 @@ import android.content.Context
 import android.os.SystemClock
 import android.util.Log
 import androidx.annotation.Keep
-import com.google.android.gms.common.GooglePlayServicesUtil
 import com.google.android.gms.dynamic.IObjectWrapper
 import com.google.android.gms.dynamic.unwrap
 import com.google.android.gms.vision.face.internal.client.DetectionOptions
@@ -26,13 +25,13 @@ class ChimeraNativeFaceDetectorCreator : INativeFaceDetectorCreator.Stub() {
         try {
             val elapsedRealtime = SystemClock.elapsedRealtime()
             val context = context.unwrap<Context>() ?: throw RuntimeException("Context is null")
-            val remoteContext = GooglePlayServicesUtil.getRemoteContext(context) ?: throw RuntimeException("remoteContext is null")
-            Log.d(TAG, "newFaceDetector: context: ${context.packageName} remoteContext: ${remoteContext.packageName}")
+            val detectorContext = context.createPackageContext(context.applicationContext?.packageName ?: context.packageName, 0)
+            Log.d(TAG, "newFaceDetector: context: ${context.packageName} detectorContext: ${detectorContext.packageName}")
             if (!OpenCVLoader.initLocal()) {
                 throw RuntimeException("Unable to load OpenCV")
             }
             Log.d(TAG, "ChimeraNativeFaceDetectorCreator newFaceDetector: load <openCV> library in ${SystemClock.elapsedRealtime() - elapsedRealtime}ms")
-            return FaceDetector(remoteContext, faceDetectionOptions)
+            return FaceDetector(detectorContext, faceDetectionOptions)
         } catch (e: Throwable) {
             Log.w(TAG, "ChimeraNativeFaceDetectorCreator newFaceDetector load failed ", e)
             return null
