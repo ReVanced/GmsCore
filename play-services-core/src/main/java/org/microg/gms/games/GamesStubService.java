@@ -50,7 +50,7 @@ public class GamesStubService extends BaseService {
         }
         if (packageName == null) packageName = GMS_PACKAGE_NAME;
         Intent intent = new Intent(ACTION_PLAY_GAMES_UPGRADE);
-        intent.setPackage(GMS_PACKAGE_NAME);
+        intent.setPackage(getPackageName());
         intent.putExtra(EXTRA_GAME_PACACKE_NAME, packageName);
         Bundle bundle = new Bundle();
         bundle.putParcelable("pendingIntent", PendingIntentCompat.getActivity(this, packageName.hashCode(), intent, FLAG_UPDATE_CURRENT, false));

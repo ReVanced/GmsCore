@@ -25,7 +25,6 @@ import com.google.android.gms.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.microg.gms.auth.AuthConstants
-import org.microg.gms.common.Constants
 import org.microg.gms.gcm.ACTION_GCM_CONNECTED
 import org.microg.gms.gcm.ACTION_GCM_REGISTER_ALL_ACCOUNTS
 import org.microg.gms.people.DatabaseHelper
@@ -67,7 +66,7 @@ class AccountsFragment : PreferenceFragmentCompat() {
 
     private fun registerGcmInGms() {
         Intent(ACTION_GCM_REGISTER_ALL_ACCOUNTS).apply {
-            `package` = Constants.GMS_PACKAGE_NAME
+            `package` = requireContext().packageName
         }.let { requireContext().sendBroadcast(it) }
     }
 

@@ -506,7 +506,7 @@ public class McsService extends Service implements Handler.Callback {
 
     private void notifyGcmConnected() {
         Intent intent = new Intent(ACTION_GCM_CONNECTED);
-        intent.setPackage(Constants.GMS_PACKAGE_NAME);
+        intent.setPackage(getPackageName());
         sendBroadcast(intent);
     }
 
