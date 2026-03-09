@@ -332,7 +332,7 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "updateVerifyNotification: notificationId: $notificationId")
         if (notificationId == -1) return
         Intent(ACTION_GCM_NOTIFY_COMPLETE).apply {
-            setPackage(GMS_PACKAGE_NAME)
+            setPackage(packageName)
             putExtra(EXTRA_NOTIFICATION_ACCOUNT, accountName)
         }.let { sendBroadcast(it) }
     }
