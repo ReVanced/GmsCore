@@ -122,7 +122,7 @@ class GcmInGmsService : LifecycleService() {
                     handleIntent(intent)
                 } else {
                     val intent = Intent(ACTION_GCM_RECONNECT).apply {
-                        setPackage(this@GcmInGmsService.packageName)
+                        setPackage(BuildConfig.APPLICATION_ID)
                     }
                     sendBroadcast(intent)
                 }
@@ -270,7 +270,7 @@ class GcmInGmsService : LifecycleService() {
         val content = notificationData.content ?: return
         val intentExtras = notificationData.intentActions?.primaryPayload?.extras ?: return
         val intent = Intent(this, MainActivity::class.java).apply {
-            `package` = this@GcmInGmsService.packageName
+            `package` = BuildConfig.APPLICATION_ID
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_MULTIPLE_TASK
             intentExtras.forEach { putExtra(it.key, it.value_) }
             putExtra(KEY_NOTIFICATION_ID, notificationId)
@@ -309,9 +309,9 @@ class GcmInGmsService : LifecycleService() {
         }
         Log.d(TAG, "updateGroupsWithAccount extras: $extras")
         val intent = Intent(GcmConstants.ACTION_GCM_SEND).apply {
-            setPackage(this@GcmInGmsService.packageName)
+            setPackage(BuildConfig.APPLICATION_ID)
             putExtras(extras)
-            putExtra(GcmConstants.EXTRA_APP, Intent().apply { setPackage(this@GcmInGmsService.packageName) }.let { PendingIntentCompat.getBroadcast(this@GcmInGmsService, 0, it, 0, false) })
+            putExtra(GcmConstants.EXTRA_APP, Intent().apply { setPackage(BuildConfig.APPLICATION_ID) }.let { PendingIntentCompat.getBroadcast(this@GcmInGmsService, 0, it, 0, false) })
         }.also {
             it.putExtra(GcmConstants.EXTRA_MESSENGER, Messenger(object : Handler(Looper.getMainLooper()) {
                 override fun handleMessage(msg: Message) {
@@ -387,7 +387,7 @@ class GcmInGmsService : LifecycleService() {
         } else {
             Log.d(TAG, "registerGcmInGms: sendBroadcast: ${intent.action}")
             Intent(intent.action).apply {
-                setPackage(this@GcmInGmsService.packageName)
+                setPackage(BuildConfig.APPLICATION_ID)
                 putExtras(intent)
             }.let { sendBroadcast(it) }
         }

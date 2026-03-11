@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.BuildConfig
 import com.google.android.gms.R
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.GetSignInIntentRequest
@@ -97,7 +98,7 @@ class AssistedSignInActivity : AppCompatActivity() {
         Log.d(TAG, "prepareSignIn options:$googleSignInOptions")
         val signInConfiguration = SignInConfiguration(clientPackageName!!, googleSignInOptions!!)
         val intent = Intent(this, AuthSignInActivity::class.java).apply {
-            `package` = this@AssistedSignInActivity.packageName
+            `package` = BuildConfig.APPLICATION_ID
             putExtra("config", signInConfiguration)
             putExtra("nonce", signInIntentRequest?.nonce)
         }

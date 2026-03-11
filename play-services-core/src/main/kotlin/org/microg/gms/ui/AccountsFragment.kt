@@ -21,6 +21,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.TwoStatePreference
+import com.google.android.gms.BuildConfig
 import com.google.android.gms.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -66,7 +67,7 @@ class AccountsFragment : PreferenceFragmentCompat() {
 
     private fun registerGcmInGms() {
         Intent(ACTION_GCM_REGISTER_ALL_ACCOUNTS).apply {
-            `package` = requireContext().packageName
+            `package` = BuildConfig.APPLICATION_ID
         }.let { requireContext().sendBroadcast(it) }
     }
 
