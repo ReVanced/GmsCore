@@ -28,6 +28,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.BuildConfig
 import com.google.android.gms.R
 import com.google.android.gms.common.Scopes
 import com.google.android.gms.games.snapshot.SnapshotMetadataEntity
@@ -347,7 +348,7 @@ class GamesUiFragment : BottomSheetDialogFragment() {
             }
         }?.adapter = LeaderboardsAdapter(context, loadLeaderboards) { leaderboard ->
             val intent = Intent(ACTION_VIEW_LEADERBOARDS_SCORES)
-            intent.setPackage(context.packageName)
+            intent.setPackage(BuildConfig.APPLICATION_ID)
             intent.putExtra(EXTRA_GAME_PACKAGE_NAME, clientPackageName)
             intent.putExtra(EXTRA_ACCOUNT_KEY, Integer.toHexString(currentAccount?.name.hashCode()))
             intent.putExtra(EXTRA_LEADERBOARD_ID, leaderboard.id)
