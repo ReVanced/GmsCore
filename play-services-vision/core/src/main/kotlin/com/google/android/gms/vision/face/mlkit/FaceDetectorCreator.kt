@@ -14,6 +14,7 @@ import com.google.android.gms.dynamic.unwrap
 import com.google.mlkit.vision.face.FaceDetectionOptions
 import com.google.mlkit.vision.face.aidls.IFaceDetector
 import com.google.mlkit.vision.face.aidls.IFaceDetectorCreator
+import org.microg.gms.vision.core.BuildConfig
 import org.microg.gms.vision.face.TAG
 import org.microg.gms.vision.face.mlkit.FaceDetector
 import org.opencv.android.OpenCVLoader
@@ -26,13 +27,13 @@ class FaceDetectorCreator : IFaceDetectorCreator.Stub() {
         try {
             val elapsedRealtime = SystemClock.elapsedRealtime()
             val context = context.unwrap<Context>() ?: throw RuntimeException("Context is null")
-            val detectorContext = context.createPackageContext(context.applicationContext?.packageName ?: context.packageName, 0)
-            Log.d(TAG, "newFaceDetector: context: ${context.packageName} detectorContext: ${detectorContext.packageName}")
+            val remoteContext = context.createPackageContext(BuildConfig.APPLICATION_ID, Context.CONTEXT_INCLUDE_CODE or Context.CONTEXT_IGNORE_SECURITY)
+            Log.d(TAG, "newFaceDetector: context: ${context.packageName} remoteContext: ${remoteContext.packageName}")
             if (!OpenCVLoader.initLocal()) {
                 throw RuntimeException("Unable to load OpenCV")
             }
             Log.d(TAG, "FaceDetectorCreator newFaceDetector: load <openCV> library in ${SystemClock.elapsedRealtime() - elapsedRealtime}ms")
-            return FaceDetector(detectorContext, faceDetectionOptions)
+            return FaceDetector(remoteContext, faceDetectionOptions)
         } catch (e: Throwable) {
             Log.w(TAG, "FaceDetectorCreator newFaceDetector load failed ", e)
             return null
