@@ -21,13 +21,12 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.content.SharedPreferences
 import android.view.LayoutInflater
+import org.microg.gms.maps.mapbox.BuildConfig
 import java.io.File
 
 class MapContext(private val context: Context) : ContextWrapper(
     context.createPackageContext(
-        Class.forName("com.google.android.gms.BuildConfig")
-            .getField("APPLICATION_ID")
-            .get(null) as String,
+        BuildConfig.APPLICATION_ID,
         Context.CONTEXT_INCLUDE_CODE or Context.CONTEXT_IGNORE_SECURITY
     )
 ) {
