@@ -27,7 +27,7 @@ android {
         versionName version
         minSdkVersion androidMinSdk
         targetSdkVersion androidTargetSdk
-        buildConfigField "String", "APPLICATION_ID", "\"app.revanced.android.gms\""
+        buildConfigField "String", "APPLICATION_ID", "\"com.google.android.gms\""
     }
 
     flavorDimensions = ['target']
@@ -43,7 +43,7 @@ android {
         }
         "user" {
             dimension 'target'
-            buildConfigField "String", "APPLICATION_ID", "\"org.microg.gms\""
+            buildConfigField "String", "APPLICATION_ID", "\"app.revanced.android.gms\""
         }
     }
 

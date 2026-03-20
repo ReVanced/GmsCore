@@ -53,7 +53,7 @@ android {
         versionName version
         minSdkVersion androidMinSdk
         targetSdkVersion androidTargetSdk
-        buildConfigField "String", "APPLICATION_ID", "\"app.revanced.android.gms\""
+        buildConfigField "String", "APPLICATION_ID", "\"com.google.android.gms\""
         buildConfigField "String", "MAPBOX_KEY", "\"${localProperties.getProperty("mapbox.key", System.getenv('MAPBOX_VECTOR_TILES_KEY') ?: "")}\""
         buildConfigField "String", "STADIA_KEY", "\"${localProperties.getProperty("stadia.key", System.getenv('STADIA_API_KEY') ?: "")}\""
 
@@ -75,7 +75,7 @@ android {
         }
         "user" {
             dimension 'target'
-            buildConfigField "String", "APPLICATION_ID", "\"org.microg.gms\""
+            buildConfigField "String", "APPLICATION_ID", "\"app.revanced.android.gms\""
         }
     }
 
