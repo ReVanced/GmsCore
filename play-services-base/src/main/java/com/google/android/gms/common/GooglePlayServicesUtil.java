@@ -16,6 +16,8 @@
 
 package com.google.android.gms.common;
 
+import com.google.android.gms.base.BuildConfig;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
@@ -137,7 +139,7 @@ public class GooglePlayServicesUtil {
      */
     public static Context getRemoteContext(Context context) {
         try {
-            return context.createPackageContext(Constants.GMS_PACKAGE_NAME, Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);
+            return context.createPackageContext(BuildConfig.APPLICATION_ID, Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);
         } catch (PackageManager.NameNotFoundException unused) {
             return null;
         }
@@ -150,7 +152,7 @@ public class GooglePlayServicesUtil {
      */
     public static Resources getRemoteResources(Context context) {
         try {
-            return context.getPackageManager().getResourcesForApplication(Constants.GMS_PACKAGE_NAME);
+            return context.getPackageManager().getResourcesForApplication(BuildConfig.APPLICATION_ID);
         } catch (PackageManager.NameNotFoundException unused) {
             return null;
         }
