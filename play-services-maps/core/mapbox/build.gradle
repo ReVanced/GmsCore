@@ -53,11 +53,29 @@ android {
         versionName version
         minSdkVersion androidMinSdk
         targetSdkVersion androidTargetSdk
+        buildConfigField "String", "APPLICATION_ID", "\"com.google.android.gms\""
         buildConfigField "String", "MAPBOX_KEY", "\"${localProperties.getProperty("mapbox.key", System.getenv('MAPBOX_VECTOR_TILES_KEY') ?: "")}\""
         buildConfigField "String", "STADIA_KEY", "\"${localProperties.getProperty("stadia.key", System.getenv('STADIA_API_KEY') ?: "")}\""
 
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
+    }
+
+    flavorDimensions = ['target']
+    productFlavors {
+        "default" {
+            dimension 'target'
+        }
+        "huawei" {
+            dimension 'target'
+        }
+        "huaweilh" {
+            dimension 'target'
+        }
+        "user" {
+            dimension 'target'
+            buildConfigField "String", "APPLICATION_ID", "\"app.revanced.android.gms\""
         }
     }
 

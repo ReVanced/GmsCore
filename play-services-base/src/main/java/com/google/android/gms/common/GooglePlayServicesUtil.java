@@ -136,8 +136,9 @@ public class GooglePlayServicesUtil {
      * @return The Context object of the Buddy APK or null if the Buddy APK is not installed on the device.
      */
     public static Context getRemoteContext(Context context) {
+        String packageName = getRemotePackageName(context);
         try {
-            return context.createPackageContext(Constants.GMS_PACKAGE_NAME, Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);
+            return context.createPackageContext(packageName, Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);
         } catch (PackageManager.NameNotFoundException unused) {
             return null;
         }
@@ -149,10 +150,31 @@ public class GooglePlayServicesUtil {
      * @return The Resources object of the Buddy APK or null if the Buddy APK is not installed on the device.
      */
     public static Resources getRemoteResources(Context context) {
+        String packageName = getRemotePackageName(context);
         try {
-            return context.getPackageManager().getResourcesForApplication(Constants.GMS_PACKAGE_NAME);
+            return context.getPackageManager().getResourcesForApplication(packageName);
         } catch (PackageManager.NameNotFoundException unused) {
             return null;
+        }
+    }
+
+    private static String getRemotePackageName(Context context) {
+        String packageName = context.getPackageName();
+        if (Constants.GMS_PACKAGE_NAME.equals(packageName) || Constants.USER_MICROG_PACKAGE_NAME.equals(packageName)) {
+            return packageName;
+        }
+        if (isInstalledPackage(context, Constants.USER_MICROG_PACKAGE_NAME)) {
+            return Constants.USER_MICROG_PACKAGE_NAME;
+        }
+        return Constants.GMS_PACKAGE_NAME;
+    }
+
+    private static boolean isInstalledPackage(Context context, String packageName) {
+        try {
+            context.getPackageManager().getPackageInfo(packageName, 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException ignored) {
+            return false;
         }
     }
 

@@ -119,7 +119,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "app.revanced.android.gms"
+        applicationId = "com.google.android.gms"
 
         versionName version
         versionCode appVersionCode
@@ -131,7 +131,7 @@ android {
         multiDexKeepProguard file('multidex-keep.pro')
 
         manifestPlaceholders = [appLabel: "@string/gms_app_name"]
-        resValue "string", "package_id", "app.revanced.android.gms"
+        resValue "string", "package_id", "com.google.android.gms"
 
         buildConfigField "String", "SAFETYNET_KEY", "\"${localProperties.get("safetynet.key", "")}\""
         buildConfigField "String", "RECAPTCHA_SITE_KEY", "\"${localProperties.get("recaptcha.siteKey", "")}\""
@@ -183,11 +183,11 @@ android {
         }
         "user" {
             dimension 'target'
-            applicationId = "org.microg.gms"
+            applicationId = "app.revanced.android.gms"
             versionNameSuffix "-user"
             manifestPlaceholders = [appLabel: "@string/limited_services_app_name"]
             matchingFallbacks = ['default']
-            resValue "string", "package_id", "org.microg.gms"
+            resValue "string", "package_id", "app.revanced.android.gms"
         }
         "hms" {
             dimension 'maps'
