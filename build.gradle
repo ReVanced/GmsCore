@@ -124,28 +124,3 @@ subprojects {
     }
 }
 
-subprojects {
-    def currentProject = project
-    def projectsWithTargetFlavor = [
-            ':fake-signature',
-            ':vending-app',
-            ':play-services-base',
-            ':play-services-auth-api-phone-core',
-            ':play-services-core',
-            ':play-services-location-core',
-            ':play-services-maps-core-mapbox',
-    ] as Set
-    plugins.withId('com.android.library') {
-        if (!projectsWithTargetFlavor.contains(currentProject.path)) {
-            def androidExt = currentProject.extensions.getByName("android")
-            androidExt.defaultConfig.missingDimensionStrategy 'target', 'default'
-        }
-    }
-    plugins.withId('com.android.application') {
-        if (!projectsWithTargetFlavor.contains(currentProject.path)) {
-            def androidExt = currentProject.extensions.getByName("android")
-            androidExt.defaultConfig.missingDimensionStrategy 'target', 'default'
-        }
-    }
-}
-
