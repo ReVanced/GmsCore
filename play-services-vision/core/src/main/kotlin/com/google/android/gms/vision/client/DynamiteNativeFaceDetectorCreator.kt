@@ -9,12 +9,12 @@ import android.content.Context
 import android.os.SystemClock
 import android.util.Log
 import androidx.annotation.Keep
+import com.google.android.gms.common.GooglePlayServicesUtil
 import com.google.android.gms.dynamic.IObjectWrapper
 import com.google.android.gms.dynamic.unwrap
 import com.google.android.gms.vision.face.internal.client.DetectionOptions
 import com.google.android.gms.vision.face.internal.client.INativeFaceDetector
 import com.google.android.gms.vision.face.internal.client.INativeFaceDetectorCreator
-import org.microg.gms.vision.core.BuildConfig
 import org.microg.gms.vision.face.TAG
 import org.microg.gms.vision.face.FaceDetector
 import org.opencv.android.OpenCVLoader
@@ -27,7 +27,7 @@ class DynamiteNativeFaceDetectorCreator : INativeFaceDetectorCreator.Stub() {
         try {
             val elapsedRealtime = SystemClock.elapsedRealtime()
             val context = context.unwrap<Context>() ?: throw RuntimeException("Context is null")
-            val remoteContext = context.createPackageContext(BuildConfig.APPLICATION_ID, Context.CONTEXT_INCLUDE_CODE or Context.CONTEXT_IGNORE_SECURITY)
+            val remoteContext = GooglePlayServicesUtil.getRemoteContext(context) ?: throw RuntimeException("remoteContext is null")
             Log.d(TAG, "newFaceDetector: context: ${context.packageName} remoteContext: ${remoteContext.packageName}")
             if (!OpenCVLoader.initLocal()) {
                 throw RuntimeException("Unable to load OpenCV")

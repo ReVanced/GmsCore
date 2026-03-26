@@ -13,8 +13,6 @@ android {
 }
 
 afterEvaluate {
-    def releaseComponent = components.findByName("release") ?: components.findByName("defaultRelease")
-
     publishing {
         publications {
             release(MavenPublication) {
@@ -41,7 +39,7 @@ afterEvaluate {
                     }
                 }
 
-                from releaseComponent
+                from components.release
             }
         }
         if (project.hasProperty('sonatype.username')) {
@@ -62,5 +60,5 @@ afterEvaluate {
             sign publishing.publications
         }
     }
-    tasks.findByName("sourceReleaseJar")?.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    tasks.getByPath("sourceReleaseJar").duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
