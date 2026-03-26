@@ -19,32 +19,10 @@ android {
     compileSdkVersion androidCompileSdk
     buildToolsVersion "$androidBuildVersionTools"
 
-    buildFeatures {
-        buildConfig = true
-    }
-
     defaultConfig {
         versionName version
         minSdkVersion androidMinSdk
         targetSdkVersion androidTargetSdk
-        buildConfigField "String", "APPLICATION_ID", "\"com.google.android.gms\""
-    }
-
-    flavorDimensions = ['target']
-    productFlavors {
-        "default" {
-            dimension 'target'
-        }
-        "huawei" {
-            dimension 'target'
-        }
-        "huaweilh" {
-            dimension 'target'
-        }
-        "user" {
-            dimension 'target'
-            buildConfigField "String", "APPLICATION_ID", "\"app.revanced.android.gms\""
-        }
     }
 
     sourceSets {
