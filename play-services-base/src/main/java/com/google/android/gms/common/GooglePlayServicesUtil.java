@@ -136,12 +136,8 @@ public class GooglePlayServicesUtil {
      * @return The Context object of the Buddy APK or null if the Buddy APK is not installed on the device.
      */
     public static Context getRemoteContext(Context context) {
-        String packageName = Constants.GMS_PACKAGE_NAME;
-        if (Constants.USER_MICROG_PACKAGE_NAME.equals(context.getPackageName())) {
-            packageName = Constants.USER_MICROG_PACKAGE_NAME;
-        }
         try {
-            return context.createPackageContext(packageName, Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);
+            return context.createPackageContext(context.getPackageName(), Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);
         } catch (PackageManager.NameNotFoundException unused) {
             return null;
         }
