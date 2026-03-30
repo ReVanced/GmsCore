@@ -15,6 +15,7 @@ import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.BuildConfig
 import com.google.android.gms.auth.api.identity.AuthorizationRequest
 import com.google.android.gms.auth.api.identity.AuthorizationResult
 import com.google.android.gms.auth.api.identity.ClearTokenRequest
@@ -45,7 +46,6 @@ import org.microg.gms.auth.signin.getServerAuthTokenManager
 import org.microg.gms.auth.signin.performSignIn
 import org.microg.gms.auth.signin.scopeUris
 import org.microg.gms.common.AccountUtils
-import org.microg.gms.common.Constants
 import org.microg.gms.common.GmsService
 import org.microg.gms.common.PackageUtils
 import java.util.concurrent.atomic.AtomicInteger
@@ -107,7 +107,7 @@ class AuthorizationServiceImpl(val context: Context, val packageName: String, ov
                     defaultAccount?.name?.let { setAccountName(it) }
                 }.build()
                 val intent = Intent(context, AuthSignInActivity::class.java).apply {
-                    `package` = Constants.GMS_PACKAGE_NAME
+                    `package` = BuildConfig.APPLICATION_ID
                     putExtra("config", SignInConfiguration(packageName, options))
                 }
                 AuthorizationResult(
