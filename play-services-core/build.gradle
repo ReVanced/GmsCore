@@ -173,13 +173,17 @@ android {
         }
         "huawei" {
             dimension 'target'
+            applicationId = "app.revanced.android.gms"
             versionNameSuffix "-hw"
+            resValue "string", "package_id", "app.revanced.android.gms"
         }
         "huaweilh" {
             dimension 'target'
+            applicationId = "app.revanced.android.gms"
             versionNameSuffix "-lh"
             versionCode appVersionCode - 1000
             matchingFallbacks = ['huawei']
+            resValue "string", "package_id", "app.revanced.android.gms"
         }
         "user" {
             dimension 'target'

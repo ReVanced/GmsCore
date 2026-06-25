@@ -22,13 +22,13 @@ jobs:
           java-version: "17"
 
       - name: Build
-        run: ./gradlew --no-daemon :play-services-core:assembleMapboxDefault :play-services-core:assembleMapboxHuawei
+        run: ./gradlew --no-daemon :play-services-core:assembleMapboxUser :play-services-core:assembleMapboxHuawei
 
       - name: Move
         run: |
           mkdir play-services-core/build/outputs/apk/releases
           mv \
-            play-services-core/build/outputs/apk/mapboxDefault/release/*.apk \
+            play-services-core/build/outputs/apk/mapboxUser/release/*.apk \
             play-services-core/build/outputs/apk/mapboxHuawei/release/*.apk \
             play-services-core/build/outputs/apk/releases
 
