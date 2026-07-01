@@ -39,10 +39,46 @@ const val KEY_SOURCE_URL = "url"
 const val KEY_SOURCE_TILES = "tiles"
 
 
-fun getStyle(
-    context: MapContext, mapType: Int, styleOptions: MapStyleOptions?, styleFromFileWorkaround: Boolean = false
-): Style.Builder {
+/**
+ * When no Mapbox or Stadia key is configured at build time, the vector styles cannot fetch any tiles
+ * and the map renders blank. In that case fall back to key-less OpenStreetMap raster tiles, which
+ * MapLibre renders without any access token, so the map remains usable out of the box.
+ */
+internal fun useKeylessRasterTiles(): Boolean =
+    BuildConfig.MAPBOX_KEY.isEmpty() && BuildConfig.STADIA_KEY.isEmpty()
 
+private fun buildKeylessRasterStyle(mapType: Int): JSONObject {
+    val tilesUrl = when (mapType) {
+        GoogleMap.MAP_TYPE_SATELLITE, GoogleMap.MAP_TYPE_HYBRID ->
+            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+        else -> "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+    }
+    return JSONObject().apply {
+        put("version", 8)
+        put("sources", JSONObject().apply {
+            put("osm", JSONObject().apply {
+                put("type", "raster")
+                put("tiles", JSONArray().put(tilesUrl))
+                put("tileSize", 256)
+                put("maxzoom", 19)
+            })
+        })
+        put("layers", JSONArray().apply {
+            put(JSONObject().apply {
+                put("id", "background")
+                put("type", "background")
+                put("paint", JSONObject().put("background-color", "#e6e4e0"))
+            })
+            put(JSONObject().apply {
+                put("id", "osm")
+                put("type", "raster")
+                put("source", "osm")
+            })
+        })
+    }
+}
+
+private fun loadVectorStyle(context: MapContext, mapType: Int): JSONObject {
     val styleJson = JSONObject(
         context.assets.open(
             if (BuildConfig.STADIA_KEY.isNotEmpty()) when (mapType) {
@@ -74,6 +110,18 @@ fun getStyle(
                 }
             }
         }
+    }
+    return styleJson
+}
+
+fun getStyle(
+    context: MapContext, mapType: Int, styleOptions: MapStyleOptions?, styleFromFileWorkaround: Boolean = false
+): Style.Builder {
+
+    val styleJson = if (useKeylessRasterTiles()) {
+        buildKeylessRasterStyle(mapType)
+    } else {
+        loadVectorStyle(context, mapType)
     }
 
     styleOptions?.apply(styleJson)

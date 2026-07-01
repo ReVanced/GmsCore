@@ -53,7 +53,7 @@ class MapFragmentImpl(private val activity: Activity) : IMapFragmentDelegate.Stu
         if (options == null) {
             options = GoogleMapOptions()
         }
-        if (options?.liteMode == true) {
+        if (options?.liteMode == true && !useKeylessRasterTiles()) {
             map = LiteGoogleMapImpl(activity, options ?: GoogleMapOptions())
         } else {
             map = GoogleMapImpl(activity, options ?: GoogleMapOptions())
@@ -66,7 +66,7 @@ class MapFragmentImpl(private val activity: Activity) : IMapFragmentDelegate.Stu
         }
         Log.d(TAG, "onCreateView: ${options?.camera?.target}")
         if (map == null) {
-            map = if (options?.liteMode == true) {
+            map = if (options?.liteMode == true && !useKeylessRasterTiles()) {
                 LiteGoogleMapImpl(activity, options ?: GoogleMapOptions())
             } else {
                 GoogleMapImpl(activity, options ?: GoogleMapOptions())

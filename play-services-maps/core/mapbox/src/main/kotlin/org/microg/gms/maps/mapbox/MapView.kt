@@ -34,7 +34,9 @@ class MapViewImpl(private val context: Context, options: GoogleMapOptions?) : IM
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate: ${options?.camera?.target}")
-        map = if (options.liteMode) {
+        // The lite-mode snapshotter draws a logo overlay that MapLibre cannot build for the
+        // key-less raster fallback (crashes in MapSnapshotter). Use the full renderer in that case.
+        map = if (options.liteMode && !useKeylessRasterTiles()) {
             LiteGoogleMapImpl(context, options)
         } else {
             GoogleMapImpl(context, options)
