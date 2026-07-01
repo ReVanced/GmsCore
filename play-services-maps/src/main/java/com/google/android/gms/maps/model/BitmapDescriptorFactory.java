@@ -18,7 +18,7 @@ public class BitmapDescriptorFactory {
         BitmapDescriptorFactory.delegate = delegate;
     }
     private static IBitmapDescriptorFactoryDelegate getDelegate() {
-        if (delegate == null) throw new IllegalStateException("CameraUpdateFactory is not initialized");
+        if (delegate == null) throw new IllegalStateException("BitmapDescriptorFactory is not initialized");
         return delegate;
     }
 }
