@@ -24,7 +24,7 @@ import android.view.LayoutInflater
 import org.microg.gms.common.Constants
 import java.io.File
 
-class MapContext(private val context: Context) : ContextWrapper(context.createPackageContext(Constants.GMS_PACKAGE_NAME, Context.CONTEXT_INCLUDE_CODE or Context.CONTEXT_IGNORE_SECURITY)) {
+class MapContext(private val context: Context) : ContextWrapper(context.createPackageContext(resolveSelfPackage(context), Context.CONTEXT_INCLUDE_CODE or Context.CONTEXT_IGNORE_SECURITY)) {
     private var layoutInflater: LayoutInflater? = null
     private val appContext: Context
         get() = context.applicationContext ?: context
@@ -77,5 +77,21 @@ class MapContext(private val context: Context) : ContextWrapper(context.createPa
 
     companion object {
         val TAG = "GmsMapContext"
+
+        // ReVanced fix: GmsCore may be installed under app.revanced.android.gms instead of
+        // com.google.android.gms. Resolve to whichever GmsCore package is actually installed so
+        // we load the correct APK (the one bundling libmapbox-gl.so). Prefer the ReVanced package
+        // to avoid accidentally binding to a (possibly disabled) real Google GMS install.
+        fun resolveSelfPackage(context: Context): String {
+            for (pkg in listOf(Constants.USER_MICROG_PACKAGE_NAME, Constants.GMS_PACKAGE_NAME)) {
+                try {
+                    context.packageManager.getApplicationInfo(pkg, 0)
+                    return pkg
+                } catch (e: Exception) {
+                    // not installed, try next candidate
+                }
+            }
+            return Constants.GMS_PACKAGE_NAME
+        }
     }
 }
