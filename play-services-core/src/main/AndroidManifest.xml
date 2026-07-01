@@ -913,7 +913,7 @@
 
         <service android:name="org.microg.gms.phenotype.PhenotypeService">
             <intent-filter>
-                <action android:name="app.revanced.android.gms.phenotype.service.START" />
+                <action android:name="com.google.android.gms.phenotype.service.START" />
             </intent-filter>
         </service>
 
@@ -1235,7 +1235,7 @@
                 <action android:name="com.google.android.gms.fitness.GoogleFitnessService.START" />
                 <action android:name="com.google.android.gms.fitness.InternalApi" />
                 <action android:name="com.google.android.gms.fitness.SensorsApi" />
-                <action android:name="app.revanced.android.gms.fonts.service.START" />
+                <action android:name="com.google.android.gms.fonts.service.START" />
                 <action android:name="com.google.android.gms.freighter.service.START" />
                 <action android:name="com.google.android.gms.growth.service.START" />
                 <action android:name="com.google.android.gms.googlehelp.service.GoogleHelpService.START" />
