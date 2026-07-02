@@ -150,7 +150,7 @@ public class GooglePlayServicesUtil {
      */
     public static Resources getRemoteResources(Context context) {
         try {
-            return context.getPackageManager().getResourcesForApplication(Constants.GMS_PACKAGE_NAME);
+            return context.getPackageManager().getResourcesForApplication(context.getPackageName());
         } catch (PackageManager.NameNotFoundException unused) {
             return null;
         }
